@@ -15,7 +15,7 @@ export const ChatView = ({
     <header className="px-6 h-16 border-b border-white/5 flex items-center justify-between">
       <div className="flex items-center gap-2">
         <span className="font-bold tracking-tight">${activeConv?.title || 'New Chat'}</span>
-        <span className="text-[10px] font-bold bg-white/5 px-2 py-0.5 rounded uppercase tracking-widest text-neutral-500">Llama 3 8B</span>
+        <span className="text-[10px] font-bold bg-white/5 px-2 py-0.5 rounded uppercase tracking-widest text-neutral-500">Venice Uncensored</span>
       </div>
     </header>
 

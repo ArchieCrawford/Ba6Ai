@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS public.conversations (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   title TEXT DEFAULT 'New Conversation',
-  model TEXT DEFAULT 'venice-chat-1',
+  model TEXT DEFAULT 'venice-uncensored',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 

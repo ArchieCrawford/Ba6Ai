@@ -68,7 +68,7 @@ export default function App() {
 
       let nextConvs = convs;
       if (nextConvs.length === 0) {
-        const newConv = await dbApi.createConversation('New Chat', 'llama-3-8b');
+        const newConv = await dbApi.createConversation('New Chat', 'venice-uncensored');
         nextConvs = [newConv];
       }
       setConversations(nextConvs);
@@ -131,7 +131,7 @@ export default function App() {
 
   const handleNewConversation = async () => {
     try {
-      const newConv = await dbApi.createConversation('New Chat', 'llama-3-8b');
+    const newConv = await dbApi.createConversation('New Chat', 'venice-uncensored');
       setConversations(prev => [newConv, ...prev]);
       setActiveConv(newConv);
       return newConv;
