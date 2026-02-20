@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { html } from '../ui/html.js';
 import { authApi } from '../api/authApi.js';
 import { dbApi } from '../api/dbApi.js';
@@ -28,6 +28,13 @@ export default function App() {
   const [generations, setGenerations] = useState([]);
   const [imagePrompt, setImagePrompt] = useState('');
   const [sending, setSending] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const drawerRef = useRef(null);
+  const menuButtonRef = useRef(null);
+  const wasSidebarOpen = useRef(false);
+
+  const closeSidebar = () => setIsSidebarOpen(false);
+  const openSidebar = () => setIsSidebarOpen(true);
 
   useEffect(() => {
     if (window.location.pathname === '/farcaster') setView('farcaster');
@@ -92,6 +99,79 @@ export default function App() {
       });
     }
   }, [activeConv]);
+
+  useEffect(() => {
+    if (!isSidebarOpen) return;
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    if (!isMobile) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isSidebarOpen]);
+
+  useEffect(() => {
+    if (!isSidebarOpen) return;
+    const drawer = drawerRef.current;
+    if (!drawer) return;
+
+    const focusableSelector = [
+      'a[href]',
+      'button:not([disabled])',
+      'textarea',
+      'input',
+      'select',
+      '[tabindex]:not([tabindex="-1"])'
+    ].join(',');
+
+    const getFocusable = () => Array.from(drawer.querySelectorAll(focusableSelector))
+      .filter((el) => el.offsetParent !== null);
+
+    const focusInitial = () => {
+      const items = getFocusable();
+      if (items.length > 0) items[0].focus();
+      else drawer.focus();
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+        if (isDesktop) {
+          closeSidebar();
+        }
+        return;
+      }
+
+      if (event.key === 'Tab') {
+        const items = getFocusable();
+        if (items.length === 0) {
+          event.preventDefault();
+          return;
+        }
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    setTimeout(focusInitial, 0);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isSidebarOpen]);
+
+  useEffect(() => {
+    if (wasSidebarOpen.current && !isSidebarOpen) {
+      menuButtonRef.current?.focus?.();
+    }
+    wasSidebarOpen.current = isSidebarOpen;
+  }, [isSidebarOpen]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -177,16 +257,37 @@ export default function App() {
         className="pointer-events-none select-none absolute right-[-8%] top-1/2 -translate-y-1/2 w-[520px] opacity-5 blur-[1px]"
         aria-hidden="true"
       />
-      <${Sidebar}
-        activeTab=${activeTab}
-        setActiveTab=${setActiveTab}
-        profile=${profile}
-        conversations=${conversations}
-        activeConv=${activeConv}
-        setActiveConv=${setActiveConv}
-        onNewConversation=${handleNewConversation}
-        onSignOut=${() => authApi.signOut()}
-      />
+
+      ${isSidebarOpen && html`
+        <div
+          className="fixed inset-0 bg-black/60 z-30 md:hidden"
+          onClick=${closeSidebar}
+          aria-hidden="true"
+        ></div>
+      `}
+
+      <div
+        ref=${drawerRef}
+        className=${`fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 bg-black w-[min(80vw,320px)] md:w-64 md:static md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        role="dialog"
+        aria-modal=${isSidebarOpen ? 'true' : 'false'}
+        aria-label="Main navigation"
+        tabIndex="-1"
+        id="ba6-sidebar"
+      >
+        <${Sidebar}
+          activeTab=${activeTab}
+          setActiveTab=${setActiveTab}
+          profile=${profile}
+          conversations=${conversations}
+          activeConv=${activeConv}
+          setActiveConv=${setActiveConv}
+          onNewConversation=${handleNewConversation}
+          onSignOut=${() => authApi.signOut()}
+          onNavSelect=${closeSidebar}
+          onClose=${closeSidebar}
+        />
+      </div>
 
       <main className="flex-1 flex flex-col overflow-hidden relative">
         ${activeTab === 'chat' && html`
@@ -197,6 +298,9 @@ export default function App() {
             messageInput=${messageInput}
             setMessageInput=${setMessageInput}
             onSend=${handleSendMessage}
+            onOpenSidebar=${openSidebar}
+            menuButtonRef=${menuButtonRef}
+            isSidebarOpen=${isSidebarOpen}
           />
         `}
 
@@ -207,6 +311,9 @@ export default function App() {
             imagePrompt=${imagePrompt}
             setImagePrompt=${setImagePrompt}
             onGenerate=${handleGenerateImage}
+            onOpenSidebar=${openSidebar}
+            menuButtonRef=${menuButtonRef}
+            isSidebarOpen=${isSidebarOpen}
           />
         `}
 
@@ -215,6 +322,9 @@ export default function App() {
             profile=${profile}
             session=${session}
             onProfileUpdated=${(nextProfile) => setProfile(nextProfile)}
+            onOpenSidebar=${openSidebar}
+            menuButtonRef=${menuButtonRef}
+            isSidebarOpen=${isSidebarOpen}
           />
         `}
       </main>

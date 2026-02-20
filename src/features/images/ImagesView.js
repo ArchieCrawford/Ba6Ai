@@ -1,18 +1,35 @@
 import React from 'react';
 import { html } from '../../ui/html.js';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Menu } from 'lucide-react';
 
 export const ImagesView = ({
   generations,
   sending,
   imagePrompt,
   setImagePrompt,
-  onGenerate
+  onGenerate,
+  onOpenSidebar,
+  menuButtonRef,
+  isSidebarOpen
 }) => html`
-  <div className="flex-1 overflow-y-auto p-8">
+  <div className="flex-1 overflow-y-auto p-4 md:p-8">
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold tracking-tighter mb-2">Image Generation</h1>
-      <p className="text-neutral-500 mb-8">Powered by Stable Diffusion XL via Venice.</p>
+      <div className="flex items-center gap-3 mb-4">
+        <button
+          ref=${menuButtonRef}
+          className="md:hidden p-2 -ml-2 rounded-lg text-neutral-300 hover:text-white hover:bg-white/5 transition"
+          onClick=${onOpenSidebar}
+          aria-label="Open navigation"
+          aria-controls="ba6-sidebar"
+          aria-expanded=${isSidebarOpen ? 'true' : 'false'}
+        >
+          <${Menu} size=${20} />
+        </button>
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tighter mb-1">Image Generation</h1>
+          <p className="text-neutral-500 text-sm md:text-base">Powered by Stable Diffusion XL via Venice.</p>
+        </div>
+      </div>
 
       <form onSubmit=${onGenerate} className="flex gap-2 bg-[#0a0a0a] border border-white/10 p-2 rounded-2xl mb-12 focus-within:border-white transition">
         <input

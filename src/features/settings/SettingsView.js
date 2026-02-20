@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { html } from '../../ui/html.js';
 import { ASSETS } from '../../assets/index.js';
-import { Plus, Loader2, Check } from 'lucide-react';
+import { Plus, Loader2, Check, Menu } from 'lucide-react';
 import { supabase } from '../../api/supabaseClient.js';
 import { ethers } from 'ethers';
 
@@ -11,7 +11,7 @@ const PLAN_LABELS = {
   team: 'Team'
 };
 
-export const SettingsView = ({ profile, session, onProfileUpdated }) => {
+export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar, menuButtonRef, isSidebarOpen }) => {
   const [form, setForm] = useState({ display_name: '', avatar_url: '' });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -182,8 +182,20 @@ export const SettingsView = ({ profile, session, onProfileUpdated }) => {
   const avatarPreview = useMemo(() => form.avatar_url || ASSETS.mascot, [form.avatar_url]);
 
   return html`
-    <div className="flex-1 p-12 max-w-2xl mx-auto w-full">
-      <h1 className="text-3xl font-bold tracking-tighter mb-10">Settings</h1>
+    <div className="flex-1 p-4 md:p-12 max-w-2xl mx-auto w-full">
+      <div className="flex items-center gap-3 mb-8">
+        <button
+          ref=${menuButtonRef}
+          className="md:hidden p-2 -ml-2 rounded-lg text-neutral-300 hover:text-white hover:bg-white/5 transition"
+          onClick=${onOpenSidebar}
+          aria-label="Open navigation"
+          aria-controls="ba6-sidebar"
+          aria-expanded=${isSidebarOpen ? 'true' : 'false'}
+        >
+          <${Menu} size=${20} />
+        </button>
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tighter">Settings</h1>
+      </div>
 
       ${error && html`<div className="mb-6 text-sm text-red-400">${error}</div>`}
 
