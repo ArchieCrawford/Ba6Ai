@@ -64,5 +64,16 @@ export const dbApi = {
       .select('*')
       .order('created_at', { ascending: false });
     return { data: data || [], error: handleApiError(error, 'generations').error };
+  },
+
+  getUsageMonthly: async (userId, monthKey) => {
+    requireSupabase();
+    const { data, error } = await supabase
+      .from('usage_monthly')
+      .select('user_id, month_key, text_count, image_count')
+      .eq('user_id', userId)
+      .eq('month_key', monthKey)
+      .maybeSingle();
+    return { data, error: handleApiError(error, 'usage_monthly').error };
   }
 };

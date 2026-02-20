@@ -34,7 +34,7 @@ export const ChatView = ({
       </span>
     </header>
 
-    <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 md:space-y-8 scroll-smooth">
+    <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-6 space-y-6 md:space-y-8 scroll-smooth">
       ${messages.length === 0 && html`
         <div className="h-full flex flex-col items-center justify-center text-center opacity-30">
           <img src=${ASSETS.mascot} className="w-20 h-20 rounded-2xl mb-4 grayscale" />

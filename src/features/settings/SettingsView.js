@@ -182,7 +182,7 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
   const avatarPreview = useMemo(() => form.avatar_url || ASSETS.mascot, [form.avatar_url]);
 
   return html`
-    <div className="flex-1 p-4 md:p-12 max-w-2xl mx-auto w-full">
+    <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-12 max-w-2xl mx-auto w-full">
       <div className="flex items-center gap-3 mb-8">
         <button
           ref=${menuButtonRef}

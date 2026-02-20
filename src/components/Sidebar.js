@@ -13,7 +13,8 @@ export const Sidebar = ({
   onNewConversation,
   onSignOut,
   onNavSelect,
-  onClose
+  onClose,
+  usage
 }) => html`
   <aside className="w-full border-r border-white/5 bg-black flex flex-col h-full overflow-hidden">
     <div className="p-6 flex items-center justify-between gap-2 font-bold text-lg mb-6">
@@ -80,13 +81,22 @@ export const Sidebar = ({
     </div>
 
     <div className="p-4 border-t border-white/5">
-      <div className="bg-white/5 rounded-xl p-3 mb-4">
-        <div className="text-[10px] font-bold text-neutral-500 uppercase mb-2">Usage</div>
-        <div className="h-1 bg-white/10 rounded-full overflow-hidden">
-          <div className="h-full bg-white" style=${{ width: '24%' }} />
-        </div>
-        <div className="text-[10px] text-neutral-500 mt-2">24 / 25 free credits</div>
-      </div>
+      ${(() => {
+        const plan = (profile?.plan || 'free').toLowerCase();
+        const limits = { free: { text: 25, image: 5 }, pro: { text: 1000, image: 250 }, team: { text: 5000, image: 1000 } };
+        const limit = limits[plan] || limits.free;
+        const textUsed = usage?.text_count || 0;
+        const percent = Math.min(100, Math.round((textUsed / limit.text) * 100));
+        return html`
+          <div className="bg-white/5 rounded-xl p-3 mb-4">
+            <div className="text-[10px] font-bold text-neutral-500 uppercase mb-2">Usage</div>
+            <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+              <div className="h-full bg-white" style=${{ width: `${percent}%` }} />
+            </div>
+            <div className="text-[10px] text-neutral-500 mt-2">${textUsed} / ${limit.text} text this month</div>
+          </div>
+        `;
+      })()}
       <button
         onClick=${() => {
           onSignOut();

@@ -12,7 +12,7 @@ export const ImagesView = ({
   menuButtonRef,
   isSidebarOpen
 }) => html`
-  <div className="flex-1 overflow-y-auto p-4 md:p-8">
+  <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-8">
     <div className="max-w-4xl mx-auto">
       <div className="flex items-center gap-3 mb-4">
         <button

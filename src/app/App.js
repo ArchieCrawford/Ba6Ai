@@ -33,6 +33,7 @@ export default function App() {
   const drawerRef = useRef(null);
   const menuButtonRef = useRef(null);
   const wasSidebarOpen = useRef(false);
+  const [usage, setUsage] = useState({ text_count: 0, image_count: 0, month_key: '' });
 
   const closeSidebar = () => setIsSidebarOpen(false);
   const openSidebar = () => setIsSidebarOpen(true);
@@ -51,7 +52,13 @@ export default function App() {
       return;
     }
 
-    authApi.getSession().then(({ data: { session: s } }) => {
+    authApi.getSession().then(({ data: { session: s }, error }) => {
+      if (error) {
+        authApi.signOut();
+        setSession(null);
+        setLoading(false);
+        return;
+      }
       setSession(s);
       if (s) {
         setView('app');
@@ -91,6 +98,11 @@ export default function App() {
       const { data: gens, error: gensErr } = await dbApi.getGenerations();
       if (gensErr) { setErrorState(gensErr); return; }
       setGenerations(gens);
+
+      const monthKey = new Date().toISOString().slice(0, 7);
+      const { data: usageRow, error: usageErr } = await dbApi.getUsageMonthly(uid, monthKey);
+      if (usageErr) { setErrorState(usageErr); return; }
+      setUsage(usageRow || { text_count: 0, image_count: 0, month_key: monthKey });
     } catch (err) {
       console.error('Fetch error:', err);
       setErrorState(err.message);
@@ -275,7 +287,7 @@ export default function App() {
 
       <div
         ref=${drawerRef}
-        className=${`fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 bg-black w-[min(80vw,320px)] md:w-64 md:static md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className=${`fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 bg-black w-[min(75vw,300px)] md:w-64 md:static md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
         role="dialog"
         aria-modal=${isSidebarOpen ? 'true' : 'false'}
         aria-label="Main navigation"
@@ -293,10 +305,11 @@ export default function App() {
           onSignOut=${() => authApi.signOut()}
           onNavSelect=${closeSidebar}
           onClose=${closeSidebar}
+          usage=${usage}
         />
       </div>
 
-      <main className="flex-1 flex flex-col overflow-hidden relative">
+      <main className="flex-1 flex flex-col relative min-h-0 overflow-hidden">
         ${activeTab === 'chat' && html`
           <${ChatView}
             activeConv=${activeConv}
