@@ -61,6 +61,10 @@ This project uses ESM and importmaps (no build step). Generate `env.js`, then se
 node scripts/generate-env.js
 npx serve .
 ```
+To use Venice locally, run Netlify Functions with the Netlify CLI:
+```bash
+npx netlify dev
+```
 
 ## Netlify Build Settings
 - **Build command**: `node scripts/generate-env.js`
@@ -68,6 +72,10 @@ npx serve .
 - **Environment variables** (Site settings → Environment variables):
   - `SUPABASE_URL`
   - `SUPABASE_ANON_KEY`
+  - `VENICE_API_KEY` (server-only, for Netlify Functions)
+  - `VENICE_BASE_URL` (optional, defaults to https://api.venice.ai/api/v1)
+  - `VENICE_CHAT_MODEL` (optional)
+  - `VENICE_IMAGE_MODEL` (optional)
   - `NEYNAR_API_KEY` (optional)
   - `NEYNAR_BASE_URL` (optional)
   - `NEYNAR_CLIENT_ID` (optional)
