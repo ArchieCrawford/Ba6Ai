@@ -1,0 +1,17 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g1" x1="32" y1="32" x2="224" y2="224" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111111" />
+      <stop offset="1" stop-color="#000000" />
+    </linearGradient>
+    <radialGradient id="g2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(182 70) rotate(135) scale(120)">
+      <stop stop-color="#FFFFFF" stop-opacity="0.35" />
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="url(#g1)" stroke="#1F1F1F" stroke-width="2" />
+  <circle cx="182" cy="70" r="80" fill="url(#g2)" />
+  <rect x="48" y="48" width="160" height="160" rx="32" fill="#0A0A0A" stroke="#1A1A1A" />
+  <text x="128" y="148" text-anchor="middle" fill="#EDEDED" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="700" letter-spacing="-2">BA6</text>
+  <text x="128" y="178" text-anchor="middle" fill="#8A8A8A" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="3">AI</text>
+</svg>

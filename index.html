@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>BA6 AI — programmable intelligence</title>
+    <meta name="description" content="Minimal, hyper-fast interface for the world's most capable open-source models." />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="BA6 AI — programmable intelligence" />
+    <meta property="og:description" content="Minimal, hyper-fast interface for open-source AI." />
+    <meta property="og:image" content="./src/assets/ba6-og.svg" />
+    
+    <!-- Farcaster Frame v1 -->
+    <meta name="fc:frame" content="vNext" />
+    <meta name="fc:frame:image" content="./src/assets/ba6-og.svg" />
+    <meta name="fc:frame:button:1" content="Chat" />
+    <meta name="fc:frame:button:2" content="Image" />
+    <meta name="fc:frame:button:3" content="Sign In" />
+    <meta name="fc:frame:post_url" content="https://ba6-ai.vercel.app/api/frame/action" /> <!-- Replace with your actual deployed URL -->
+    
+    <link rel="icon" type="image/svg+xml" href="./src/assets/favicon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/styles/app.css" />
+    <script src="./env.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@18.2.0",
+          "react-dom": "https://esm.sh/react-dom@18.2.0",
+          "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+          "lucide-react": "https://esm.sh/lucide-react@0.344.0",
+          "clsx": "https://esm.sh/clsx@2.1.0",
+          "tailwind-merge": "https://esm.sh/tailwind-merge@2.2.1",
+          "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.39.7",
+          "date-fns": "https://esm.sh/date-fns@3.3.1",
+          "htm": "https://esm.sh/htm@3.1.1",
+          "ethers": "https://esm.sh/ethers@6.11.1"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
