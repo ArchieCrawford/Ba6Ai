@@ -11,6 +11,7 @@ export const LandingPage = ({ onStart }) => html`
         BA6 AI
       </div>
       <div className="flex items-center gap-6">
+        <a href="/docs" className="text-sm text-neutral-400 hover:text-white transition">Docs</a>
         <a href="#pricing" className="text-sm text-neutral-400 hover:text-white transition">Pricing</a>
         <button onClick=${onStart} className="bg-white text-black px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-neutral-200 transition">Start</button>
       </div>

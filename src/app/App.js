@@ -12,6 +12,7 @@ import { Sidebar } from '../components/Sidebar.js';
 import { ChatView } from '../features/chat/ChatView.js';
 import { ImagesView } from '../features/images/ImagesView.js';
 import { SettingsView } from '../features/settings/SettingsView.js';
+import { DocsPage } from '../docs/DocsPage.js';
 import { Loader2, X } from 'lucide-react';
 
 export default function App() {
@@ -38,6 +39,11 @@ export default function App() {
 
   useEffect(() => {
     if (window.location.pathname === '/farcaster') setView('farcaster');
+    if (window.location.pathname.startsWith('/docs')) {
+      setView('docs');
+      setLoading(false);
+      return;
+    }
 
     if (!isConfigured) {
       setErrorState('Supabase is not configured. Run node scripts/generate-env.js (or set window.__ENV__) with SUPABASE_URL and SUPABASE_ANON_KEY.');
@@ -248,6 +254,7 @@ export default function App() {
 
   if (!session && view === 'landing') return html`<${LandingPage} onStart=${() => setView('auth')} />`;
   if (!session && view === 'farcaster') return html`<${FarcasterPage} onStart=${() => setView('auth')} />`;
+  if (view === 'docs') return html`<${DocsPage} />`;
   if (!session) return html`<${AuthScreen} />`;
 
   return html`
