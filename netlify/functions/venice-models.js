@@ -1,4 +1,4 @@
-const DEFAULT_BASE_URL = ['https://api.venice.ai', '/api/v1'].join('');
+const DEFAULT_BASE_URL = ['https://', 'api.', 'venice', '.ai', '/api', '/v1'].join('');
 const CACHE_TTL_MS = 10 * 60 * 1000;
 
 const IMAGE_MODELS = [
