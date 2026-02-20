@@ -32,12 +32,15 @@ export const aiApi = {
 
     await supabase.from('messages').insert({ conversation_id: conversationId, role: 'user', content: message });
 
-    const monthKey = new Date().toISOString().substring(0, 7);
-    await supabase.rpc('increment_text_usage', { user_id_param: user.id, month_key_param: monthKey });
+    const { data: { session } } = await supabase.auth.getSession();
+    const accessToken = session?.access_token || '';
 
     const response = await fetch('/.netlify/functions/venice-chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': accessToken ? `Bearer ${accessToken}` : ''
+      },
       body: JSON.stringify({ message, model })
     });
 
@@ -61,12 +64,15 @@ export const aiApi = {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('Not signed in.');
 
-    const monthKey = new Date().toISOString().substring(0, 7);
-    await supabase.rpc('increment_image_usage', { user_id_param: user.id, month_key_param: monthKey });
+    const { data: { session } } = await supabase.auth.getSession();
+    const accessToken = session?.access_token || '';
 
     const response = await fetch('/.netlify/functions/venice-image', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': accessToken ? `Bearer ${accessToken}` : ''
+      },
       body: JSON.stringify({ prompt, model })
     });
 

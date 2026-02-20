@@ -211,7 +211,11 @@ export default function App() {
         `}
 
         ${activeTab === 'settings' && html`
-          <${SettingsView} profile=${profile} session=${session} />
+          <${SettingsView}
+            profile=${profile}
+            session=${session}
+            onProfileUpdated=${(nextProfile) => setProfile(nextProfile)}
+          />
         `}
       </main>
     </div>

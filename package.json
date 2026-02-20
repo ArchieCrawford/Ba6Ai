@@ -1,0 +1,14 @@
+{
+  "name": "ba6-ai",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "ethers": "^6.13.4",
+    "stripe": "^14.21.0"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^2.8.1",
+    "typescript": "^5.5.4"
+  }
+}

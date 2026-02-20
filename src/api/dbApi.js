@@ -19,7 +19,7 @@ export const dbApi = {
     requireSupabase();
     const { data, error } = await supabase
       .from('profiles')
-      .select('*, usage(*)')
+      .select('id, email, display_name, avatar_url, plan')
       .eq('id', userId)
       .maybeSingle();
     return { data, error: handleApiError(error, 'profiles').error };

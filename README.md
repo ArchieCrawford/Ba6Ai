@@ -73,12 +73,18 @@ The app will fetch the model list from `/.netlify/functions/venice-models`.
 - **Environment variables** (Site settings → Environment variables):
   - `SUPABASE_URL`
   - `SUPABASE_ANON_KEY`
+  - `SUPABASE_SERVICE_ROLE_KEY` (server-only, for webhooks + usage enforcement)
   - `VENICE_API_KEY` (server-only, for Netlify Functions)
   - `VENICE_BASE_URL` (optional, defaults to the Venice API base URL)
   - `VENICE_CHAT_MODEL` (optional)
   - `VENICE_IMAGE_MODEL` (optional)
   - `NEYNAR_API_KEY` (optional, used by `neynar-validate` function)
   - `NEYNAR_BASE_URL` (optional, used by `neynar-validate` function)
+  - `STRIPE_SECRET_KEY`
+  - `STRIPE_WEBHOOK_SECRET`
+  - `STRIPE_PRO_PRICE_ID`
+  - `STRIPE_TEAM_PRICE_ID`
+  - `SITE_URL`
 
 Notes:
 - `env.js` is **not** generated during Netlify builds. The client fetches public config at runtime from `/.netlify/functions/public-config`.
