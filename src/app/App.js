@@ -4,6 +4,7 @@ import { authApi } from '../api/authApi.js';
 import { dbApi } from '../api/dbApi.js';
 import { aiApi } from '../api/aiApi.js';
 import { isConfigured } from '../api/supabaseClient.js';
+import { ASSETS } from '../assets/index.js';
 import { LandingPage } from '../pages/LandingPage.js';
 import { FarcasterPage } from '../pages/FarcasterPage.js';
 import { AuthScreen } from '../auth/AuthScreen.js';
@@ -170,7 +171,12 @@ export default function App() {
   if (!session) return html`<${AuthScreen} />`;
 
   return html`
-    <div className="flex h-screen bg-black text-white">
+    <div className="flex h-screen bg-black text-white relative overflow-hidden">
+      <img
+        src=${ASSETS.mascot}
+        className="pointer-events-none select-none absolute right-[-8%] top-1/2 -translate-y-1/2 w-[520px] opacity-5 blur-[1px]"
+        aria-hidden="true"
+      />
       <${Sidebar}
         activeTab=${activeTab}
         setActiveTab=${setActiveTab}
