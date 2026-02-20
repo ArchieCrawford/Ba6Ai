@@ -61,3 +61,17 @@ This project uses ESM and importmaps (no build step). Generate `env.js`, then se
 node scripts/generate-env.js
 npx serve .
 ```
+
+## Netlify Build Settings
+- **Build command**: `node scripts/generate-env.js`
+- **Publish directory**: `.`
+- **Environment variables** (Site settings → Environment variables):
+  - `SUPABASE_URL`
+  - `SUPABASE_ANON_KEY`
+  - `NEYNAR_API_KEY` (optional)
+  - `NEYNAR_BASE_URL` (optional)
+  - `NEYNAR_CLIENT_ID` (optional)
+
+Notes:
+- `env.js` is generated during the build and is safe to deploy because it only includes the public keys listed above.
+- Do not expose private server keys (e.g., Venice API key) to the client.
