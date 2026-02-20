@@ -27,6 +27,8 @@ export const aiApi = {
   chat: async (conversationId, message, model) => {
     requireSupabase();
     const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Not signed in.');
+    if (!conversationId) throw new Error('Missing conversation id.');
 
     await supabase.from('messages').insert({ conversation_id: conversationId, role: 'user', content: message });
 
@@ -57,6 +59,7 @@ export const aiApi = {
   generateImage: async (prompt, model) => {
     requireSupabase();
     const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Not signed in.');
 
     const monthKey = new Date().toISOString().substring(0, 7);
     await supabase.rpc('increment_image_usage', { user_id_param: user.id, month_key_param: monthKey });

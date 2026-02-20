@@ -37,6 +37,7 @@ export const dbApi = {
   createConversation: async (title, model) => {
     requireSupabase();
     const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Not signed in.');
     const { data, error } = await supabase
       .from('conversations')
       .insert({ user_id: user.id, title, model })

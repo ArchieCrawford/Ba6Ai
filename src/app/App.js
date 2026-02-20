@@ -93,7 +93,13 @@ export default function App() {
     setMessageInput('');
     setSending(true);
     try {
-      const response = await aiApi.chat(activeConv.id, msg, activeConv.model);
+      let conversation = activeConv;
+      if (!conversation) {
+        conversation = await handleNewConversation();
+      }
+      if (!conversation) throw new Error('No active conversation.');
+
+      const response = await aiApi.chat(conversation.id, msg, conversation.model);
       setMessages(prev => [...prev, { role: 'user', content: msg }, response]);
     } catch (err) {
       alert(err.message);
@@ -122,8 +128,10 @@ export default function App() {
       const newConv = await dbApi.createConversation('New Chat', 'llama-3-8b');
       setConversations(prev => [newConv, ...prev]);
       setActiveConv(newConv);
+      return newConv;
     } catch (err) {
       alert(err.message);
+      return null;
     }
   };
 
