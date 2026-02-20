@@ -7,10 +7,7 @@ const OUT_PATH = path.join(ROOT, 'env.js');
 
 const PUBLIC_KEYS = new Set([
   'SUPABASE_URL',
-  'SUPABASE_ANON_KEY',
-  'NEYNAR_API_KEY',
-  'NEYNAR_BASE_URL',
-  'NEYNAR_CLIENT_ID'
+  'SUPABASE_ANON_KEY'
 ]);
 
 const readEnvFile = () => {

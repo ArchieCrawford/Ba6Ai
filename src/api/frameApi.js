@@ -1,16 +1,10 @@
-import { getEnv } from '../config/env.js';
-
 export const frameApi = {
-  NEYNAR_API_KEY: getEnv('NEYNAR_API_KEY'),
-  NEYNAR_BASE_URL: getEnv('NEYNAR_BASE_URL', 'https://api.neynar.com/v2/farcaster/frame/validate'),
-
   validateAction: async (messageBytes) => {
     try {
-      const response = await fetch(frameApi.NEYNAR_BASE_URL, {
+      const response = await fetch('/.netlify/functions/neynar-validate', {
         method: 'POST',
         headers: {
           'accept': 'application/json',
-          'api_key': frameApi.NEYNAR_API_KEY,
           'content-type': 'application/json'
         },
         body: JSON.stringify({ message_bytes_in_hex: messageBytes })

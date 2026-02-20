@@ -6,11 +6,22 @@ const requireSupabase = () => {
 
 export const aiApi = {
   getModels: async () => {
-    return [
-      { id: 'llama-3-70b', name: 'Llama 3 70B', type: 'text' },
-      { id: 'llama-3-8b', name: 'Llama 3 8B', type: 'text' },
-      { id: 'stable-diffusion-xl', name: 'SDXL', type: 'image' }
+    const fallback = [
+      { id: 'venice-uncensored', name: 'Venice Uncensored 1.1', type: 'text' },
+      { id: 'qwen3-4b', name: 'Venice Small', type: 'text' },
+      { id: 'mistral-31-24b', name: 'Venice Medium', type: 'text' },
+      { id: 'z-image-turbo', name: 'Z-Image Turbo', type: 'image' }
     ];
+
+    try {
+      const response = await fetch('/.netlify/functions/venice-models');
+      if (!response.ok) return fallback;
+      const models = await response.json();
+      if (!Array.isArray(models) || models.length === 0) return fallback;
+      return models;
+    } catch (err) {
+      return fallback;
+    }
   },
 
   chat: async (conversationId, message, model) => {

@@ -56,7 +56,7 @@ Images for the frame are dynamically requested from `/api/frame/image`. For the 
 - **Team**: 5000 text / 1000 images per month.
 
 ## Local Development
-This project uses ESM and importmaps (no build step). Generate `env.js`, then serve the root directory with any static server:
+This project uses ESM and importmaps (no build step). Generate `env.js` for local static serving, then serve the root directory:
 ```bash
 node scripts/generate-env.js
 npx serve .
@@ -65,21 +65,21 @@ To use Venice locally, run Netlify Functions with the Netlify CLI:
 ```bash
 npx netlify dev
 ```
+The app will fetch the model list from `/.netlify/functions/venice-models`.
 
 ## Netlify Build Settings
-- **Build command**: `node scripts/generate-env.js`
+- **Build command**: `echo "no build"`
 - **Publish directory**: `.`
 - **Environment variables** (Site settings → Environment variables):
   - `SUPABASE_URL`
   - `SUPABASE_ANON_KEY`
   - `VENICE_API_KEY` (server-only, for Netlify Functions)
-  - `VENICE_BASE_URL` (optional, defaults to https://api.venice.ai/api/v1)
+  - `VENICE_BASE_URL` (optional, defaults to the Venice API base URL)
   - `VENICE_CHAT_MODEL` (optional)
   - `VENICE_IMAGE_MODEL` (optional)
-  - `NEYNAR_API_KEY` (optional)
-  - `NEYNAR_BASE_URL` (optional)
-  - `NEYNAR_CLIENT_ID` (optional)
+  - `NEYNAR_API_KEY` (optional, used by `neynar-validate` function)
+  - `NEYNAR_BASE_URL` (optional, used by `neynar-validate` function)
 
 Notes:
-- `env.js` is generated during the build and is safe to deploy because it only includes the public keys listed above.
+- `env.js` is **not** generated during Netlify builds. The client fetches public config at runtime from `/.netlify/functions/public-config`.
 - Do not expose private server keys (e.g., Venice API key) to the client.

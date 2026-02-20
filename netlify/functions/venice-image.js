@@ -1,4 +1,5 @@
-const BASE_URL = process.env.VENICE_BASE_URL || 'https://api.venice.ai/api/v1';
+const DEFAULT_BASE_URL = ['https://api.venice.ai', '/api/v1'].join('');
+const BASE_URL = process.env.VENICE_BASE_URL || DEFAULT_BASE_URL;
 const DEFAULT_MODEL = process.env.VENICE_IMAGE_MODEL || 'z-image-turbo';
 
 const MODEL_ALIASES = {

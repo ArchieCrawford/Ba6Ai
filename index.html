@@ -25,7 +25,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./src/styles/app.css" />
-    <script src="./env.js"></script>
     <script type="importmap">
       {
         "imports": {
@@ -45,6 +44,36 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="./src/main.js"></script>
+    <script>
+      window.__ENV__ = window.__ENV__ || {};
+
+      const loadEnvScript = () => new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = './env.js';
+        script.onload = () => resolve();
+        script.onerror = () => resolve();
+        document.head.appendChild(script);
+      });
+
+      const loadPublicConfig = async () => {
+        try {
+          const response = await fetch('/.netlify/functions/public-config');
+          if (!response.ok) return;
+          const data = await response.json();
+          window.__ENV__ = { ...window.__ENV__, ...data };
+        } catch (err) {
+          // Ignore if functions are not available (e.g., static local server)
+        }
+      };
+
+      (async () => {
+        await loadEnvScript();
+        await loadPublicConfig();
+        const main = document.createElement('script');
+        main.type = 'module';
+        main.src = './src/main.js';
+        document.body.appendChild(main);
+      })();
+    </script>
   </body>
 </html>
