@@ -47,13 +47,20 @@
     <script>
       window.__ENV__ = window.__ENV__ || {};
 
-      const loadEnvScript = () => new Promise((resolve) => {
-        const script = document.createElement('script');
-        script.src = './env.js';
-        script.onload = () => resolve();
-        script.onerror = () => resolve();
-        document.head.appendChild(script);
-      });
+      const loadEnvScript = async () => {
+        try {
+          const response = await fetch('./env.js', { cache: 'no-store' });
+          if (!response.ok) return;
+          const contentType = response.headers.get('content-type') || '';
+          if (contentType.includes('text/html')) return;
+          const text = await response.text();
+          if (!text.trim().startsWith('window.__ENV__')) return;
+          // eslint-disable-next-line no-new-func
+          new Function(text)();
+        } catch (err) {
+          // Ignore if env.js is missing or invalid
+        }
+      };
 
       const loadPublicConfig = async () => {
         try {

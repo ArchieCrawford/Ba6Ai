@@ -11,7 +11,7 @@ export const ChatView = ({
   setMessageInput,
   onSend
 }) => html`
-  <>
+  <div className="flex-1 flex flex-col">
     <header className="px-6 h-16 border-b border-white/5 flex items-center justify-between">
       <div className="flex items-center gap-2">
         <span className="font-bold tracking-tight">${activeConv?.title || 'New Chat'}</span>
@@ -57,5 +57,5 @@ export const ChatView = ({
         </button>
       </form>
     </footer>
-  </>
+  </div>
 `;
