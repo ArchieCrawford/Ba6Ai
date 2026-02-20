@@ -65,8 +65,14 @@ export default function App() {
 
       const { data: convs, error: convsErr } = await dbApi.getConversations();
       if (convsErr) { setErrorState(convsErr); return; }
-      setConversations(convs);
-      if (convs.length > 0) setActiveConv(convs[0]);
+
+      let nextConvs = convs;
+      if (nextConvs.length === 0) {
+        const newConv = await dbApi.createConversation('New Chat', 'llama-3-8b');
+        nextConvs = [newConv];
+      }
+      setConversations(nextConvs);
+      setActiveConv(nextConvs[0]);
 
       const { data: gens, error: gensErr } = await dbApi.getGenerations();
       if (gensErr) { setErrorState(gensErr); return; }
