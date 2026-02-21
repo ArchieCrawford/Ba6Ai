@@ -17,7 +17,7 @@ export const Sidebar = ({
   usage
 }) => html`
   <aside className="w-full border-r border-white/5 bg-black flex flex-col h-full overflow-hidden">
-    <div className="p-6 flex items-center justify-between gap-2 font-bold text-lg mb-6">
+    <div className="p-4 md:p-6 flex items-center justify-between gap-2 font-bold text-base md:text-lg mb-4 md:mb-6">
       <div className="flex items-center gap-2">
         <img src=${ASSETS.mascot} className="w-6 h-6 rounded-md" />
         BA6 AI
@@ -31,7 +31,7 @@ export const Sidebar = ({
       </button>
     </div>
 
-    <div className="px-4 space-y-1 overflow-y-auto flex-1">
+    <div className="px-3 md:px-4 space-y-1 overflow-y-auto flex-1">
       ${[
         { id: 'chat', name: 'Chat', icon: MessageSquare },
         { id: 'images', name: 'Images', icon: ImageIcon },
@@ -43,15 +43,15 @@ export const Sidebar = ({
             setActiveTab(item.id);
             onNavSelect?.();
           }}
-          className=${`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${activeTab === item.id ? 'bg-white text-black' : 'text-neutral-500 hover:text-white hover:bg-white/5'}`}
+          className=${`w-full flex items-center gap-3 px-3 py-2 md:py-2.5 rounded-xl transition ${activeTab === item.id ? 'bg-white text-black' : 'text-neutral-500 hover:text-white hover:bg-white/5'}`}
         >
           <${item.icon} size=${18} /> ${item.name}
         </button>
       `)}
 
       ${activeTab === 'chat' && html`
-        <div className="mt-10">
-          <div className="flex items-center justify-between px-3 mb-4">
+        <div className="mt-6 md:mt-10">
+          <div className="flex items-center justify-between px-3 mb-3 md:mb-4">
             <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">History</span>
             <button
               onClick=${() => {
@@ -80,7 +80,7 @@ export const Sidebar = ({
       `}
     </div>
 
-    <div className="p-4 border-t border-white/5">
+    <div className="p-3 md:p-4 border-t border-white/5">
       ${(() => {
         const plan = (profile?.plan || 'free').toLowerCase();
         const limits = { free: { text: 25, image: 5 }, pro: { text: 1000, image: 250 }, team: { text: 5000, image: 1000 } };
@@ -88,12 +88,12 @@ export const Sidebar = ({
         const textUsed = usage?.text_count || 0;
         const percent = Math.min(100, Math.round((textUsed / limit.text) * 100));
         return html`
-          <div className="bg-white/5 rounded-xl p-3 mb-4">
-            <div className="text-[10px] font-bold text-neutral-500 uppercase mb-2">Usage</div>
+          <div className="bg-white/5 rounded-xl p-2.5 md:p-3 mb-4">
+            <div className="text-[9px] md:text-[10px] font-bold text-neutral-500 uppercase mb-2">Usage</div>
             <div className="h-1 bg-white/10 rounded-full overflow-hidden">
               <div className="h-full bg-white" style=${{ width: `${percent}%` }} />
             </div>
-            <div className="text-[10px] text-neutral-500 mt-2">${textUsed} / ${limit.text} text this month</div>
+            <div className="text-[9px] md:text-[10px] text-neutral-500 mt-2">${textUsed} / ${limit.text} text this month</div>
           </div>
         `;
       })()}

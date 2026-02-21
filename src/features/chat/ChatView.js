@@ -15,7 +15,7 @@ export const ChatView = ({
   isSidebarOpen
 }) => html`
   <div className="flex-1 flex flex-col">
-    <header className="px-4 md:px-6 h-16 border-b border-white/5 flex items-center justify-between gap-3">
+    <header className="px-3 md:px-6 h-14 md:h-16 border-b border-white/5 flex items-center justify-between gap-2 md:gap-3">
       <div className="flex items-center gap-3 min-w-0">
         <button
           ref=${menuButtonRef}
@@ -27,14 +27,14 @@ export const ChatView = ({
         >
           <${Menu} size=${20} />
         </button>
-        <span className="font-bold tracking-tight truncate">${activeConv?.title || 'New Chat'}</span>
+        <span className="font-bold tracking-tight truncate max-w-[55vw] md:max-w-none">${activeConv?.title || 'New Chat'}</span>
       </div>
-      <span className="text-[10px] font-bold bg-white/5 px-2 py-0.5 rounded uppercase tracking-widest text-neutral-500 whitespace-nowrap">
+      <span className="text-[9px] md:text-[10px] font-bold bg-white/5 px-2 py-0.5 rounded uppercase tracking-widest text-neutral-500 whitespace-nowrap">
         Venice Uncensored
       </span>
     </header>
 
-    <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-6 space-y-6 md:space-y-8 scroll-smooth">
+    <div className="flex-1 min-h-0 overflow-y-auto p-3 md:p-6 space-y-4 md:space-y-8 scroll-smooth">
       ${messages.length === 0 && html`
         <div className="h-full flex flex-col items-center justify-center text-center opacity-30">
           <img src=${ASSETS.mascot} className="w-20 h-20 rounded-2xl mb-4 grayscale" />
@@ -43,7 +43,7 @@ export const ChatView = ({
       `}
       ${messages.map(m => html`
         <div className=${`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-          <div className=${`max-w-2xl px-6 py-4 rounded-3xl text-sm leading-relaxed ${m.role === 'user' ? 'bg-[#0a0a0a] border border-white/5 text-neutral-200' : 'text-neutral-300'}`}>
+          <div className=${`max-w-[85%] md:max-w-2xl px-4 py-3 md:px-6 md:py-4 rounded-3xl text-[13px] md:text-sm leading-relaxed ${m.role === 'user' ? 'bg-[#0a0a0a] border border-white/5 text-neutral-200' : 'text-neutral-300'}`}>
             ${m.content}
           </div>
         </div>
@@ -59,8 +59,8 @@ export const ChatView = ({
       `}
     </div>
 
-    <footer className="p-4 md:p-6 bg-black border-t border-white/5">
-      <form onSubmit=${onSend} className="max-w-3xl mx-auto flex items-center gap-2 bg-[#0a0a0a] border border-white/10 p-2 rounded-2xl focus-within:border-white transition">
+    <footer className="p-3 md:p-6 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:pb-6 bg-black border-t border-white/5">
+      <form onSubmit=${onSend} className="w-full md:max-w-3xl md:mx-auto flex items-center gap-2 bg-[#0a0a0a] border border-white/10 p-2 rounded-2xl focus-within:border-white transition">
         <input
           className="flex-1 bg-transparent px-4 py-2 outline-none"
           placeholder="Message BA6 AI..."

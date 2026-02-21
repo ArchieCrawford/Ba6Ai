@@ -249,14 +249,14 @@ export default function App() {
   };
 
   if (loading) return html`
-    <div className="h-screen bg-black flex items-center justify-center">
+    <div className="min-h-[100dvh] bg-black flex items-center justify-center">
       <${Loader2} className="animate-spin text-white" size=${40} />
     </div>
   `;
 
   if (errorState) return html`
-    <div className="min-h-screen flex items-center justify-center bg-black p-4">
-      <div className="bg-[#0a0a0a] border border-white/5 p-8 rounded-3xl shadow-xl w-full max-w-md text-center ink-glow">
+    <div className="min-h-[100dvh] flex items-center justify-center bg-black p-4">
+      <div className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-3xl shadow-xl w-full md:max-w-md text-center ink-glow">
         <div className="w-16 h-16 bg-red-950/30 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
           <${X} size=${32} />
         </div>
@@ -278,10 +278,10 @@ export default function App() {
   if (!session) return html`<${AuthScreen} />`;
 
   return html`
-    <div className="flex h-screen bg-black text-white relative overflow-hidden">
+    <div className="flex min-h-[100dvh] md:h-screen bg-black text-white relative overflow-hidden">
       <img
         src=${ASSETS.mascot}
-        className="pointer-events-none select-none absolute right-[-8%] top-1/2 -translate-y-1/2 w-[520px] opacity-5 blur-[1px]"
+        className="pointer-events-none select-none absolute right-[-8%] top-1/2 -translate-y-1/2 w-[520px] opacity-5 blur-[1px] hidden md:block"
         aria-hidden="true"
       />
 
@@ -295,7 +295,7 @@ export default function App() {
 
       <div
         ref=${drawerRef}
-        className=${`fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 bg-black w-[min(70vw,280px)] md:w-64 md:static md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className=${`fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 bg-black w-[min(70vw,260px)] md:w-64 md:static md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
         role="dialog"
         aria-modal=${isSidebarOpen ? 'true' : 'false'}
         aria-label="Main navigation"

@@ -3,7 +3,7 @@ import { html } from '../ui/html.js';
 import { ASSETS } from '../assets/index.js';
 
 export const FarcasterPage = ({ onStart }) => html`
-  <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 text-center">
+  <div className="min-h-[100dvh] bg-black flex flex-col items-center justify-center p-6 text-center">
     <div className="relative mb-8">
       <div className="absolute inset-0 bg-white/10 blur-2xl rounded-full" />
       <img src=${ASSETS.mascot} className="w-24 h-24 rounded-3xl relative z-10 ink-glow" />

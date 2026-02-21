@@ -51,14 +51,14 @@ export const AuthScreen = () => {
   };
 
   return html`
-    <div className="min-h-screen flex items-center justify-center bg-black p-4 relative overflow-hidden">
+    <div className="min-h-[100dvh] flex items-center justify-center bg-black p-4 relative overflow-hidden">
       <img
         src=${ASSETS.mascot}
-        className="pointer-events-none select-none absolute right-[-6%] top-1/2 -translate-y-1/2 w-[360px] opacity-10 blur-[1px]"
+        className="pointer-events-none select-none absolute right-[-6%] top-1/2 -translate-y-1/2 w-[360px] opacity-10 blur-[1px] hidden md:block"
         aria-hidden="true"
       />
-      <div className="w-full max-w-md bg-[#0a0a0a] border border-white/5 p-8 rounded-3xl ink-glow relative z-10">
-        <div className="text-center mb-10">
+      <div className="w-full md:max-w-md bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-3xl ink-glow relative z-10">
+        <div className="text-center mb-8 md:mb-10">
           <div className="relative w-16 h-16 mx-auto mb-4">
             <div className="absolute inset-0 bg-white/5 blur-xl rounded-full" />
             <img src=${ASSETS.mascot} className="w-16 h-16 rounded-2xl relative z-10" />

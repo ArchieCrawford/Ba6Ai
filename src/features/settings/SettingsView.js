@@ -182,8 +182,8 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
   const avatarPreview = useMemo(() => form.avatar_url || ASSETS.mascot, [form.avatar_url]);
 
   return html`
-    <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-12 max-w-2xl mx-auto w-full">
-      <div className="flex items-center gap-3 mb-8">
+    <div className="flex-1 min-h-0 overflow-y-auto p-3 md:p-12 max-w-none md:max-w-2xl md:mx-auto w-full">
+      <div className="flex items-center gap-3 mb-6 md:mb-8">
         <button
           ref=${menuButtonRef}
           className="md:hidden p-2 -ml-2 rounded-lg text-neutral-300 hover:text-white hover:bg-white/5 transition"
@@ -199,11 +199,11 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
 
       ${error && html`<div className="mb-6 text-sm text-red-400">${error}</div>`}
 
-      <div className="space-y-12">
+      <div className="space-y-8 md:space-y-12">
         <section>
-          <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-6">Profile</h3>
-          <div className="p-6 rounded-2xl border border-white/5 bg-[#0a0a0a] space-y-6">
-            <div className="flex items-center gap-6">
+          <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-4 md:mb-6">Profile</h3>
+          <div className="p-4 md:p-6 rounded-2xl border border-white/5 bg-[#0a0a0a] space-y-6">
+            <div className="flex items-center gap-4 md:gap-6">
               <img src=${avatarPreview} className="w-16 h-16 rounded-full" />
               <div>
                 <div className="font-bold text-lg">${profile?.display_name || 'User'}</div>
@@ -240,9 +240,9 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
         </section>
 
         <section>
-          <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-6">Account Plan</h3>
-          <div className="p-6 rounded-2xl border border-white/5 bg-[#0a0a0a] space-y-4">
-            <div className="flex items-center justify-between">
+          <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-4 md:mb-6">Account Plan</h3>
+          <div className="p-4 md:p-6 rounded-2xl border border-white/5 bg-[#0a0a0a] space-y-4">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
               <div>
                 <div className="font-bold text-lg capitalize">${PLAN_LABELS[plan] || 'Free'} Plan</div>
                 <div className="text-neutral-500 text-sm">Upgrade instantly with Stripe.</div>
@@ -252,7 +252,7 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
 
             <div className="grid gap-3">
               ${['pro', 'team'].map((tier) => html`
-                <div className="flex items-center justify-between border border-white/10 rounded-xl p-4">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border border-white/10 rounded-xl p-4">
                   <div>
                     <div className="font-semibold text-sm uppercase tracking-widest">${PLAN_LABELS[tier]} </div>
                     <div className="text-xs text-neutral-500">Unlock higher usage limits.</div>
@@ -271,14 +271,14 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
         </section>
 
         <section>
-          <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-6">Linked Wallets</h3>
+          <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-4 md:mb-6">Linked Wallets</h3>
           <div className="space-y-4">
             ${wallets.length > 0 && html`
               <div className="space-y-2">
                 ${wallets.map((wallet) => html`
-                  <div className="px-4 py-3 rounded-xl border border-white/10 bg-[#0a0a0a] text-xs text-neutral-300 flex items-center justify-between">
-                    <span>${wallet.address}</span>
-                    <span className="text-neutral-500">Chain ${wallet.chain_id || '-'}</span>
+                  <div className="px-4 py-3 rounded-xl border border-white/10 bg-[#0a0a0a] text-xs text-neutral-300 flex items-center justify-between gap-3">
+                    <span className="truncate min-w-0">${wallet.address}</span>
+                    <span className="text-neutral-500 whitespace-nowrap">Chain ${wallet.chain_id || '-'}</span>
                   </div>
                 `)}
               </div>
@@ -286,7 +286,7 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
             <button
               onClick=${handleWalletConnect}
               disabled=${walletLoading}
-              className="w-full p-6 rounded-2xl border border-white/5 bg-[#0a0a0a] border-dashed flex items-center justify-center gap-2 text-neutral-500 hover:text-white hover:border-white transition"
+              className="w-full p-4 md:p-6 rounded-2xl border border-white/5 bg-[#0a0a0a] border-dashed flex items-center justify-center gap-2 text-neutral-500 hover:text-white hover:border-white transition"
             >
               ${walletLoading && html`<${Loader2} className="animate-spin" size=${16} />`}
               <${Plus} size=${18} /> Connect Wallet
