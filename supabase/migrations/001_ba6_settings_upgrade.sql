@@ -58,6 +58,7 @@ create table if not exists public.wallet_nonces (
 alter table public.profiles enable row level security;
 alter table public.wallets enable row level security;
 alter table public.wallet_nonces enable row level security;
+alter table public.usage_monthly enable row level security;
 
 -- Policies
 -- Profiles
@@ -96,6 +97,12 @@ CREATE POLICY "Users can view own wallet nonce"
 CREATE POLICY "Users can upsert own wallet nonce"
   ON public.wallet_nonces FOR INSERT
   WITH CHECK (auth.uid() = user_id);
+
+-- Usage monthly
+DROP POLICY IF EXISTS "Users can view own usage monthly" ON public.usage_monthly;
+CREATE POLICY "Users can view own usage monthly"
+  ON public.usage_monthly FOR SELECT
+  USING (auth.uid() = user_id);
 
 -- Keep profile email in sync on new users
 create or replace function public.handle_new_user()

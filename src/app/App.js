@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { html } from '../ui/html.js';
 import { authApi } from '../api/authApi.js';
+import { supabase } from '../api/supabaseClient.js';
 import { dbApi } from '../api/dbApi.js';
 import { aiApi } from '../api/aiApi.js';
 import { isConfigured } from '../api/supabaseClient.js';
@@ -63,11 +64,18 @@ export default function App() {
       if (s) {
         setView('app');
         fetchInitialData(s.user.id);
+        supabase?.auth?.startAutoRefresh?.();
       }
       setLoading(false);
     });
 
-    const { data: { subscription } } = authApi.onAuthStateChange((_event, s) => {
+    const { data: { subscription } } = authApi.onAuthStateChange((event, s) => {
+      if (event === 'SIGNED_OUT') {
+        supabase?.auth?.stopAutoRefresh?.();
+      }
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        supabase?.auth?.startAutoRefresh?.();
+      }
       setSession(s);
       if (s) {
         setView('app');
@@ -287,7 +295,7 @@ export default function App() {
 
       <div
         ref=${drawerRef}
-        className=${`fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 bg-black w-[min(75vw,300px)] md:w-64 md:static md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className=${`fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 bg-black w-[min(70vw,280px)] md:w-64 md:static md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
         role="dialog"
         aria-modal=${isSidebarOpen ? 'true' : 'false'}
         aria-label="Main navigation"

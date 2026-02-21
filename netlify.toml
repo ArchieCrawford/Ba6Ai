@@ -1,5 +1,5 @@
 [build]
-  command = "echo \"no build\""
+  command = "npm run build:css"
   publish = "."
 
 [functions]

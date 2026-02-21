@@ -56,9 +56,10 @@ Images for the frame are dynamically requested from `/api/frame/image`. For the 
 - **Team**: 5000 text / 1000 images per month.
 
 ## Local Development
-This project uses ESM and importmaps (no build step). Generate `env.js` for local static serving, then serve the root directory:
+This project uses ESM and importmaps. Build Tailwind CSS, then serve the root directory:
 ```bash
-node scripts/generate-env.js
+npm install
+npm run build:css
 npx serve .
 ```
 To use Venice locally, run Netlify Functions with the Netlify CLI:
