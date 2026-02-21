@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { html } from '../ui/html.js';
 import { authApi } from '../api/authApi.js';
 import { supabase } from '../api/supabaseClient.js';
@@ -32,9 +32,6 @@ export default function App() {
   const [imagePrompt, setImagePrompt] = useState('');
   const [sending, setSending] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const drawerRef = useRef(null);
-  const menuButtonRef = useRef(null);
-  const wasSidebarOpen = useRef(false);
   const [usage, setUsage] = useState({ text_count: 0, image_count: 0, month_key: '' });
   const [initialTabSet, setInitialTabSet] = useState(false);
 
@@ -226,78 +223,6 @@ export default function App() {
     }
   }, [activeConv]);
 
-  useEffect(() => {
-    if (!isSidebarOpen) return;
-    const isMobile = window.matchMedia('(max-width: 767px)').matches;
-    if (!isMobile) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [isSidebarOpen]);
-
-  useEffect(() => {
-    if (!isSidebarOpen) return;
-    const drawer = drawerRef.current;
-    if (!drawer) return;
-
-    const focusableSelector = [
-      'a[href]',
-      'button:not([disabled])',
-      'textarea',
-      'input',
-      'select',
-      '[tabindex]:not([tabindex="-1"])'
-    ].join(',');
-
-    const getFocusable = () => Array.from(drawer.querySelectorAll(focusableSelector))
-      .filter((el) => el.offsetParent !== null);
-
-    const focusInitial = () => {
-      const items = getFocusable();
-      if (items.length > 0) items[0].focus();
-      else drawer.focus();
-    };
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        const isDesktop = window.matchMedia('(min-width: 768px)').matches;
-        if (isDesktop) {
-          closeSidebar();
-        }
-        return;
-      }
-
-      if (event.key === 'Tab') {
-        const items = getFocusable();
-        if (items.length === 0) {
-          event.preventDefault();
-          return;
-        }
-        const first = items[0];
-        const last = items[items.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
-      }
-    };
-
-    setTimeout(focusInitial, 0);
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isSidebarOpen]);
-
-  useEffect(() => {
-    if (wasSidebarOpen.current && !isSidebarOpen) {
-      menuButtonRef.current?.focus?.();
-    }
-    wasSidebarOpen.current = isSidebarOpen;
-  }, [isSidebarOpen]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -387,21 +312,24 @@ export default function App() {
 
       ${isSidebarOpen && html`
         <div
-          className="fixed inset-0 bg-black/60 z-30 md:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"
           onClick=${closeSidebar}
           aria-hidden="true"
         ></div>
       `}
 
       <div
-        ref=${drawerRef}
-        className=${`fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 bg-black w-[min(70vw,260px)] md:w-64 md:static md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
-        role="dialog"
-        aria-modal=${isSidebarOpen ? 'true' : 'false'}
+        className=${`fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 bg-black w-[min(70vw,260px)] md:w-64 md:static md:translate-x-0 relative ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
         aria-label="Main navigation"
-        tabIndex="-1"
         id="ba6-sidebar"
       >
+        <button
+          className="absolute top-4 right-4 text-neutral-300 hover:text-white transition md:hidden"
+          onClick=${closeSidebar}
+          aria-label="Close navigation"
+        >
+          <${X} size=${22} />
+        </button>
         <${Sidebar}
           activeTab=${activeTab}
           setActiveTab=${setActiveTab}
@@ -412,7 +340,6 @@ export default function App() {
           onNewConversation=${handleNewConversation}
           onSignOut=${() => authApi.signOut()}
           onNavSelect=${closeSidebar}
-          onClose=${closeSidebar}
           usage=${usage}
         />
       </div>
@@ -427,7 +354,6 @@ export default function App() {
             setMessageInput=${setMessageInput}
             onSend=${handleSendMessage}
             onOpenSidebar=${openSidebar}
-            menuButtonRef=${menuButtonRef}
             isSidebarOpen=${isSidebarOpen}
           />
         `}
@@ -440,7 +366,6 @@ export default function App() {
             setImagePrompt=${setImagePrompt}
             onGenerate=${handleGenerateImage}
             onOpenSidebar=${openSidebar}
-            menuButtonRef=${menuButtonRef}
             isSidebarOpen=${isSidebarOpen}
           />
         `}
@@ -451,7 +376,6 @@ export default function App() {
             session=${session}
             onProfileUpdated=${(nextProfile) => setProfile(nextProfile)}
             onOpenSidebar=${openSidebar}
-            menuButtonRef=${menuButtonRef}
             isSidebarOpen=${isSidebarOpen}
           />
         `}

@@ -11,14 +11,12 @@ export const ChatView = ({
   setMessageInput,
   onSend,
   onOpenSidebar,
-  menuButtonRef,
   isSidebarOpen
 }) => html`
   <div className="flex-1 flex flex-col">
     <header className="px-3 md:px-6 h-14 md:h-16 border-b border-white/5 flex items-center justify-between gap-2 md:gap-3">
       <div className="flex items-center gap-3 min-w-0">
         <button
-          ref=${menuButtonRef}
           className="md:hidden p-2 -ml-2 rounded-lg text-neutral-300 hover:text-white hover:bg-white/5 transition"
           onClick=${onOpenSidebar}
           aria-label="Open navigation"

@@ -11,7 +11,7 @@ const PLAN_LABELS = {
   team: 'Team'
 };
 
-export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar, menuButtonRef, isSidebarOpen }) => {
+export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar, isSidebarOpen }) => {
   const formatAddress = (address) => {
     if (!address) return '';
     if (address.length <= 12) return address;
@@ -223,7 +223,6 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
     <div className="flex-1 min-h-0 overflow-y-auto p-3 md:p-12 max-w-none md:max-w-2xl md:mx-auto w-full">
       <div className="flex items-center gap-3 mb-6 md:mb-8">
         <button
-          ref=${menuButtonRef}
           className="md:hidden p-2 -ml-2 rounded-lg text-neutral-300 hover:text-white hover:bg-white/5 transition"
           onClick=${onOpenSidebar}
           aria-label="Open navigation"

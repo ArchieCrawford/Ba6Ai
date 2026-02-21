@@ -13,7 +13,6 @@ export const Sidebar = ({
   onNewConversation,
   onSignOut,
   onNavSelect,
-  onClose,
   usage
 }) => html`
   <aside className="w-full border-r border-white/5 bg-black flex flex-col h-full overflow-hidden">
@@ -22,13 +21,6 @@ export const Sidebar = ({
         <img src=${ASSETS.mascot} className="w-6 h-6 rounded-md" />
         BA6 AI
       </div>
-      <button
-        onClick=${onClose}
-        className="md:hidden text-neutral-400 hover:text-white transition"
-        aria-label="Close navigation"
-      >
-        ×
-      </button>
     </div>
 
     <div className="px-3 md:px-4 space-y-1 overflow-y-auto flex-1">

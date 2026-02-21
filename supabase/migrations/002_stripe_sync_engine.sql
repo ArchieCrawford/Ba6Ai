@@ -10,7 +10,19 @@ DROP TABLE IF EXISTS public.webhook_events CASCADE;
 DROP FUNCTION IF EXISTS public.handle_stripe_webhook() CASCADE;
 DROP FUNCTION IF EXISTS public.process_stripe_webhook() CASCADE;
 DROP FUNCTION IF EXISTS public.stripe_webhook_handler() CASCADE;
-DROP TRIGGER IF EXISTS stripe_webhook_trigger ON public.stripe_webhooks;
+
+-- Safe drop of trigger only if target relation exists
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+    WHERE n.nspname = 'public' AND c.relname = 'stripe_webhooks'
+  ) THEN
+    DROP TRIGGER IF EXISTS stripe_webhook_trigger ON public.stripe_webhooks;
+  END IF;
+END
+$$;
 
 -- Profiles
 CREATE TABLE IF NOT EXISTS public.profiles (

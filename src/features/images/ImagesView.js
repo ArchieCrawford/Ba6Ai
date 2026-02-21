@@ -9,14 +9,12 @@ export const ImagesView = ({
   setImagePrompt,
   onGenerate,
   onOpenSidebar,
-  menuButtonRef,
   isSidebarOpen
 }) => html`
   <div className="flex-1 min-h-0 overflow-y-auto p-3 md:p-8">
     <div className="max-w-none md:max-w-4xl md:mx-auto">
       <div className="flex items-center gap-3 mb-4">
         <button
-          ref=${menuButtonRef}
           className="md:hidden p-2 -ml-2 rounded-lg text-neutral-300 hover:text-white hover:bg-white/5 transition"
           onClick=${onOpenSidebar}
           aria-label="Open navigation"
