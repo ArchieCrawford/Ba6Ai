@@ -12,6 +12,11 @@ const PLAN_LABELS = {
 };
 
 export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar, menuButtonRef, isSidebarOpen }) => {
+  const formatAddress = (address) => {
+    if (!address) return '';
+    if (address.length <= 12) return address;
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
   const [form, setForm] = useState({ display_name: '', avatar_url: '' });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -43,7 +48,7 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
     try {
       const { data, error: err } = await supabase
         .from('profiles')
-        .select('id, email, display_name, avatar_url, plan')
+        .select('id, email, display_name, avatar_url, plan, wallet_login_provider, wallet_address, farcaster_fid, farcaster_username')
         .eq('id', userId)
         .maybeSingle();
       if (err) throw err;
@@ -112,7 +117,7 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
           email
         })
         .eq('id', userId)
-        .select('id, email, display_name, avatar_url, plan')
+        .select('id, email, display_name, avatar_url, plan, wallet_login_provider, wallet_address, farcaster_fid, farcaster_username')
         .single();
       if (err) throw err;
       onProfileUpdated?.(data);
@@ -208,6 +213,11 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
   };
 
   const avatarPreview = useMemo(() => form.avatar_url || ASSETS.mascot, [form.avatar_url]);
+  const walletLoginProvider = profile?.wallet_login_provider || session?.user?.app_metadata?.provider || '';
+  const loginLabel = walletLoginProvider || (email ? 'email' : '');
+  const primaryWalletAddress = profile?.wallet_address || session?.user?.user_metadata?.wallet_address || '';
+  const farcasterUsername = profile?.farcaster_username || session?.user?.user_metadata?.farcaster?.username || '';
+  const farcasterFid = profile?.farcaster_fid || session?.user?.user_metadata?.farcaster?.fid || '';
 
   return html`
     <div className="flex-1 min-h-0 overflow-y-auto p-3 md:p-12 max-w-none md:max-w-2xl md:mx-auto w-full">
@@ -236,6 +246,13 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
               <div>
                 <div className="font-bold text-lg">${profile?.display_name || 'User'}</div>
                 <div className="text-neutral-500 text-sm">${email}</div>
+                ${loginLabel && html`<div className="text-neutral-500 text-xs mt-1">Login: ${loginLabel}</div>`}
+                ${primaryWalletAddress && html`<div className="text-neutral-500 text-xs">Wallet: ${formatAddress(primaryWalletAddress)}</div>`}
+                ${(farcasterUsername || farcasterFid) && html`
+                  <div className="text-neutral-500 text-xs">
+                    Farcaster: ${farcasterUsername ? `@${farcasterUsername}` : ''}${farcasterFid ? ` (FID ${farcasterFid})` : ''}
+                  </div>
+                `}
               </div>
             </div>
 

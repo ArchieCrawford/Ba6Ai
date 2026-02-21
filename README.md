@@ -3,31 +3,31 @@
 BA6 AI is a high-performance, dark-mode AI SaaS platform providing a minimal interface to world-class open-source models via Venice AI.
 
 ## Features
-- **Dual Auth**: Login with Email/Password or Web3 Wallet (Sign message).
+- **Dual Auth**: Login with Email/Password or Supabase Web3 (Ethereum + Solana).
 - **Inference**: Chat with LLMs (Llama 3) and Generate Images (SDXL) via Venice AI.
 - **SaaS Logic**: Monthly usage tracking, tiered plans (Free, Pro, Team).
 - **Mobile First**: Fully responsive "Ink" aesthetic, including a Farcaster-optimized launch page.
 - **Real-time**: Real-time usage and message updates via Supabase.
 
 ## Farcaster Frame Support
-BA6 AI is Frame-ready. 
+BA6 AI ships a public Farcaster Frame at `/frame` with Neynar-validated actions.
 
 ### Initial Frame
-- **URL**: `https://your-domain.com/`
-- **Buttons**: Chat, Image, Sign In.
+- **URL**: `https://your-domain.com/frame`
+- **Buttons**: Chat, Images, Sign In, Plan Status
 
-### testing
+### Testing
 1. Go to the [Farcaster Frame Debugger](https://warpcast.com/~/developers/frames).
-2. Enter your live site URL.
+2. Enter your live `/frame` URL.
 3. Verify the meta tags and interaction buttons.
 
 ### Action Endpoint (POST)
-The frame expects a `POST` endpoint at `/api/frame/action`. 
-- **Implementation**: The logic is available in `src/api/frameApi.js`. 
-- **Validation**: Uses Neynar's `validateFrameAction` to ensure requests are authentic.
+Frame interactions post to `/.netlify/functions/frame-action` which validates actions via Neynar before responding with the next frame.
+Set `NEYNAR_API_KEY` to enable validation (required for production).
 
 ### Dynamic Images
-Images for the frame are dynamically requested from `/api/frame/image`. For the MVP, we use `placehold.co` with branded parameters, which can be replaced by a dedicated image generation service.
+- `/.netlify/functions/frame-image` renders dynamic frame states.
+- `/.netlify/functions/plan-badge` renders plan + usage badges for frames and embeds.
 
 ## Tech Stack
 - **Frontend**: React + Tailwind CSS + Lucide Icons + htm (no build step).
@@ -49,6 +49,10 @@ Images for the frame are dynamically requested from `/api/frame/image`. For the 
 3. **Environment Variables**:
    - Add your credentials to `.env`.
    - Generate `env.js` (client-safe env) before running locally.
+
+4. **Web3 Auth (Supabase)**:
+   - In Supabase Auth settings, enable **Sign in with Ethereum** and **Sign in with Solana**.
+   - Add your site URL(s) to the redirect allowlist (ex: `http://localhost:8888` for `netlify dev`).
 
 ## Usage Limits
 - **Free**: 25 text / 5 images per month.
@@ -79,12 +83,13 @@ The app will fetch the model list from `/.netlify/functions/venice-models`.
   - `VENICE_BASE_URL` (optional, defaults to the Venice API base URL)
   - `VENICE_CHAT_MODEL` (optional)
   - `VENICE_IMAGE_MODEL` (optional)
-  - `NEYNAR_API_KEY` (optional, used by `neynar-validate` function)
-  - `NEYNAR_BASE_URL` (optional, used by `neynar-validate` function)
+  - `NEYNAR_API_KEY` (optional, used for Farcaster validation + profile lookups)
+  - `NEYNAR_BASE_URL` (optional, defaults to https://api.neynar.com)
   - `STRIPE_SECRET_KEY`
   - `STRIPE_PRO_PRICE_ID`
   - `STRIPE_TEAM_PRICE_ID`
   - `SITE_URL`
+  - `FRAME_POST_URL` (optional, override frame post URL)
 
 Notes:
 - `env.js` is **not** generated during Netlify builds. The client fetches public config at runtime from `/.netlify/functions/public-config`.

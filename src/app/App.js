@@ -36,6 +36,7 @@ export default function App() {
   const menuButtonRef = useRef(null);
   const wasSidebarOpen = useRef(false);
   const [usage, setUsage] = useState({ text_count: 0, image_count: 0, month_key: '' });
+  const [initialTabSet, setInitialTabSet] = useState(false);
 
   const closeSidebar = () => setIsSidebarOpen(false);
   const openSidebar = () => setIsSidebarOpen(true);
@@ -89,6 +90,36 @@ export default function App() {
     }
   };
 
+  const syncProfileFromSession = async (s) => {
+    if (!s?.user || !supabase) return;
+    const user = s.user;
+    const meta = user.user_metadata || {};
+    const appMeta = user.app_metadata || {};
+    const provider = appMeta.provider || user.identities?.[0]?.provider || '';
+
+    const walletAddress = meta.wallet_address || meta.address || meta.public_key || meta.publicKey || meta.sub;
+    const farcasterMeta = meta.farcaster || {};
+    const farcasterFid = farcasterMeta.fid || meta.farcaster_fid;
+    const farcasterUsername = farcasterMeta.username || meta.farcaster_username;
+
+    const updates = {};
+    if (provider) updates.wallet_login_provider = provider;
+    if (walletAddress) updates.wallet_address = walletAddress;
+    if (farcasterFid) updates.farcaster_fid = String(farcasterFid);
+    if (farcasterUsername) updates.farcaster_username = farcasterUsername;
+
+    if (!Object.keys(updates).length) return;
+    try {
+      await supabase.from('profiles').update(updates).eq('id', user.id);
+    } catch (err) {
+      // Ignore profile sync errors to avoid blocking sign-in.
+    }
+  };
+
+  const syncSessionIdentity = async (s) => {
+    await Promise.all([syncWalletsFromSession(s), syncProfileFromSession(s)]);
+  };
+
   useEffect(() => {
     if (window.location.pathname === '/farcaster') setView('farcaster');
     if (window.location.pathname.startsWith('/docs')) {
@@ -103,7 +134,7 @@ export default function App() {
       return;
     }
 
-    authApi.getSession().then(({ data: { session: s }, error }) => {
+    authApi.getSession().then(async ({ data: { session: s }, error }) => {
       if (error) {
         authApi.signOut();
         setSession(null);
@@ -113,14 +144,14 @@ export default function App() {
       setSession(s);
       if (s) {
         setView('app');
-        syncWalletsFromSession(s);
+        await syncSessionIdentity(s);
         fetchInitialData(s.user.id);
         supabase?.auth?.startAutoRefresh?.();
       }
       setLoading(false);
     });
 
-    const { data: { subscription } } = authApi.onAuthStateChange((event, s) => {
+    const { data: { subscription } } = authApi.onAuthStateChange(async (event, s) => {
       if (event === 'SIGNED_OUT') {
         supabase?.auth?.stopAutoRefresh?.();
       }
@@ -130,13 +161,23 @@ export default function App() {
       setSession(s);
       if (s) {
         setView('app');
-        syncWalletsFromSession(s);
+        await syncSessionIdentity(s);
         fetchInitialData(s.user.id);
       }
     });
 
     return () => subscription?.unsubscribe?.();
   }, []);
+
+  useEffect(() => {
+    if (initialTabSet) return;
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    if (tab === 'chat' || tab === 'images' || tab === 'settings') {
+      setActiveTab(tab);
+    }
+    setInitialTabSet(true);
+  }, [initialTabSet]);
 
   const fetchInitialData = async (uid) => {
     try {

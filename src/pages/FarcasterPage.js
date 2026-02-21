@@ -22,10 +22,10 @@ export const FarcasterPage = ({ onStart }) => html`
         <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-4">Share the Frame</h3>
         <p className="text-neutral-500 text-xs mb-6">Cast this URL to start the BA6 AI Frame experience in Warpcast.</p>
         <div className="bg-[#0a0a0a] border border-white/5 p-4 rounded-xl flex items-center gap-3">
-          <input readOnly value=${window.location.origin} className="bg-transparent text-[10px] flex-1 outline-none text-neutral-400" />
+          <input readOnly value=${`${window.location.origin}/frame`} className="bg-transparent text-[10px] flex-1 outline-none text-neutral-400" />
           <button
             onClick=${() => {
-              navigator.clipboard.writeText(window.location.origin);
+              navigator.clipboard.writeText(`${window.location.origin}/frame`);
               alert('Copied Frame URL!');
             }}
             className="text-[10px] font-bold text-white hover:underline"

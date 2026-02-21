@@ -33,12 +33,12 @@ export const AuthScreen = () => {
     }
   };
 
-  const handleWalletAuth = async () => {
+  const handleWalletAuth = async (chain) => {
     setLoading(true);
     setError('');
     try {
       if (!supabase) throw new Error('Supabase is not configured.');
-      const { error: authError } = await supabase.auth.signInWithWeb3({ chain: 'ethereum' });
+      const { error: authError } = await supabase.auth.signInWithWeb3({ chain });
       if (authError) throw authError;
     } catch (err) {
       setError(err.message);
@@ -64,9 +64,14 @@ export const AuthScreen = () => {
         </div>
 
         <div className="space-y-4">
-          <button onClick=${handleWalletAuth} className="w-full bg-white text-black py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-neutral-200 transition">
-            <${Wallet} size=${20} /> Continue with Wallet
-          </button>
+          <div className="grid gap-3">
+            <button onClick=${() => handleWalletAuth('ethereum')} className="w-full bg-white text-black py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-neutral-200 transition">
+              <${Wallet} size=${20} /> Continue with Ethereum
+            </button>
+            <button onClick=${() => handleWalletAuth('solana')} className="w-full border border-white/10 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-white/5 transition text-white">
+              <${Wallet} size=${20} /> Continue with Solana
+            </button>
+          </div>
 
           <div className="flex items-center gap-4 my-6">
             <div className="flex-1 h-px bg-white/5"></div>
