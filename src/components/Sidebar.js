@@ -18,7 +18,7 @@ export const Sidebar = ({
   <aside className="w-full border-r border-white/5 bg-black flex flex-col h-full overflow-hidden">
     <div className="p-4 md:p-6 flex items-center justify-between gap-2 font-bold text-base md:text-lg mb-4 md:mb-6">
       <div className="flex items-center gap-2">
-        <img src=${ASSETS.mascot} className="w-6 h-6 rounded-md" />
+        <img src=${ASSETS.mascot} alt="BA6 AI" className="w-6 h-6 rounded-md" />
         BA6 AI
       </div>
     </div>

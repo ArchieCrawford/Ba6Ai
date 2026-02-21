@@ -220,7 +220,7 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
   const farcasterFid = profile?.farcaster_fid || session?.user?.user_metadata?.farcaster?.fid || '';
 
   return html`
-    <div className="flex-1 min-h-0 overflow-y-auto p-3 md:p-12 max-w-none md:max-w-2xl md:mx-auto w-full">
+    <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-8 md:p-12 max-w-none md:max-w-2xl md:mx-auto w-full">
       <div className="flex items-center gap-3 mb-6 md:mb-8">
         <button
           className="md:hidden p-2 -ml-2 rounded-lg text-neutral-300 hover:text-white hover:bg-white/5 transition"
@@ -241,7 +241,7 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
           <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-4 md:mb-6">Profile</h3>
           <div className="p-4 md:p-6 rounded-2xl border border-white/5 bg-[#0a0a0a] space-y-6">
             <div className="flex items-center gap-4 md:gap-6">
-              <img src=${avatarPreview} className="w-16 h-16 rounded-full" />
+              <img src=${avatarPreview} alt=${`${profile?.display_name || 'User'} avatar`} className="w-16 h-16 rounded-full" />
               <div>
                 <div className="font-bold text-lg">${profile?.display_name || 'User'}</div>
                 <div className="text-neutral-500 text-sm">${email}</div>
@@ -259,14 +259,14 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
               <input
                 type="text"
                 placeholder="Display name"
-                className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl outline-none focus:border-white transition"
+                className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0"
                 value=${form.display_name}
                 onChange=${(e) => setForm({ ...form, display_name: e.target.value })}
               />
               <input
                 type="text"
                 placeholder="Avatar URL"
-                className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl outline-none focus:border-white transition"
+                className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0"
                 value=${form.avatar_url}
                 onChange=${(e) => setForm({ ...form, avatar_url: e.target.value })}
               />

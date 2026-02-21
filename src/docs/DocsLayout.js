@@ -13,7 +13,7 @@ export const DocsLayout = ({
   menuButtonRef,
   children
 }) => html`
-  <div className="min-h-screen bg-black text-white relative">
+  <div className="min-h-[100dvh] bg-black text-white relative">
     ${isNavOpen && html`
       <div
         className="fixed inset-0 bg-black/60 z-30 md:hidden"
@@ -35,7 +35,7 @@ export const DocsLayout = ({
           >
             <${Menu} size=${20} />
           </button>
-          <img src=${ASSETS.mascot} className="w-7 h-7 rounded-md" />
+          <img src=${ASSETS.mascot} alt="BA6 AI" className="w-7 h-7 rounded-md" />
           <div className="font-semibold tracking-tight">BA6 AI Docs</div>
         </div>
         <a href="/" className="text-sm text-neutral-400 hover:text-white transition inline-flex items-center gap-2">

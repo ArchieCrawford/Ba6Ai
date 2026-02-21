@@ -5,9 +5,12 @@ import { Zap } from 'lucide-react';
 
 export const LandingPage = ({ onStart }) => html`
   <div className="min-h-[100dvh] bg-black text-white selection:bg-white selection:text-black">
+    <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded-lg">
+      Skip to content
+    </a>
     <nav className="border-b border-white/5 px-4 md:px-6 py-3 md:py-4 flex justify-between items-center backdrop-blur-md sticky top-0 z-50">
       <div className="flex items-center gap-2 font-bold text-xl tracking-tight">
-        <img src=${ASSETS.mascot} className="w-8 h-8 rounded-lg" />
+        <img src=${ASSETS.mascot} alt="BA6 AI" className="w-8 h-8 rounded-lg" />
         BA6 AI
       </div>
       <div className="flex items-center gap-4 md:gap-6">
@@ -17,7 +20,7 @@ export const LandingPage = ({ onStart }) => html`
       </div>
     </nav>
 
-    <main>
+    <main id="main">
       <section className="px-4 md:px-6 pt-20 md:pt-32 pb-16 md:pb-20 text-center max-w-4xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 text-[10px] font-bold tracking-widest uppercase mb-8 text-neutral-400">
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
@@ -27,7 +30,7 @@ export const LandingPage = ({ onStart }) => html`
         <div className="flex justify-center mb-10">
            <div className="relative">
               <div className="absolute inset-0 bg-white/20 blur-3xl rounded-full" />
-              <img src=${ASSETS.mascot} className="w-32 h-32 md:w-48 md:h-48 rounded-[2rem] relative z-10 ink-glow" />
+              <img src=${ASSETS.mascot} alt="" aria-hidden="true" className="w-32 h-32 md:w-48 md:h-48 rounded-[2rem] relative z-10 ink-glow" />
            </div>
         </div>
 

@@ -35,13 +35,13 @@ export const ChatView = ({
     <div className="flex-1 min-h-0 overflow-y-auto p-3 md:p-6 space-y-4 md:space-y-8 scroll-smooth">
       ${messages.length === 0 && html`
         <div className="h-full flex flex-col items-center justify-center text-center opacity-30">
-          <img src=${ASSETS.mascot} className="w-20 h-20 rounded-2xl mb-4 grayscale" />
+          <img src=${ASSETS.mascot} alt="BA6 AI" className="w-20 h-20 rounded-2xl mb-4 grayscale" />
           <h3 className="text-xl font-bold">How can I help you today?</h3>
         </div>
       `}
       ${messages.map(m => html`
         <div className=${`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-          <div className=${`max-w-[85%] md:max-w-2xl px-4 py-3 md:px-6 md:py-4 rounded-3xl text-[13px] md:text-sm leading-relaxed ${m.role === 'user' ? 'bg-[#0a0a0a] border border-white/5 text-neutral-200' : 'text-neutral-300'}`}>
+          <div className=${`max-w-[85%] md:max-w-2xl px-4 py-3 md:px-6 md:py-4 rounded-3xl text-[13px] md:text-sm leading-relaxed whitespace-pre-wrap break-words wrap-anywhere ${m.role === 'user' ? 'bg-[#0a0a0a] border border-white/5 text-neutral-200' : 'text-neutral-300'}`}>
             ${m.content}
           </div>
         </div>
@@ -57,15 +57,18 @@ export const ChatView = ({
       `}
     </div>
 
-    <footer className="p-3 md:p-6 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:pb-6 bg-black border-t border-white/5">
+    <footer className="p-3 md:p-6 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:pb-6 bg-black border-t border-white/5 safe-bottom">
       <form onSubmit=${onSend} className="w-full md:max-w-3xl md:mx-auto flex items-center gap-2 bg-[#0a0a0a] border border-white/10 p-2 rounded-2xl focus-within:border-white transition">
+        <label className="sr-only" htmlFor="chatMessage">Message</label>
         <input
-          className="flex-1 bg-transparent px-4 py-2 outline-none"
+          id="chatMessage"
+          name="chatMessage"
+          className="flex-1 bg-transparent px-4 py-2 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0"
           placeholder="Message BA6 AI..."
           value=${messageInput}
           onChange=${(e) => setMessageInput(e.target.value)}
         />
-        <button className="p-2 bg-white text-black rounded-xl hover:bg-neutral-200 transition">
+        <button className="p-2 bg-white text-black rounded-xl hover:bg-neutral-200 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-0">
           <${Send} size=${20} />
         </button>
       </form>

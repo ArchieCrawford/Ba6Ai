@@ -15,15 +15,41 @@ import { ImagesView } from '../features/images/ImagesView.js';
 import { SettingsView } from '../features/settings/SettingsView.js';
 import { DocsPage } from '../docs/DocsPage.js';
 import { resolvePlanFromSubscription } from '../utils/billing.js';
-import { Loader2, X } from 'lucide-react';
+import { Loader2, X, Menu } from 'lucide-react';
+
+const tabFromPath = (pathname, search = '') => {
+  if (!pathname.startsWith('/app')) return 'chat';
+  const cleaned = pathname.replace(/^\/app\/?/, '');
+  const parts = cleaned.split('/').filter(Boolean);
+  const direct = parts[0];
+  if (direct === 'chat' || direct === 'images' || direct === 'settings' || direct === 'admin') return direct;
+  const params = new URLSearchParams(search);
+  const fallback = params.get('tab');
+  if (fallback === 'chat' || fallback === 'images' || fallback === 'settings' || fallback === 'admin') return fallback;
+  return 'chat';
+};
+
+const pathFromTab = (tab) => {
+  if (tab === 'images') return '/app/images';
+  if (tab === 'settings') return '/app/settings';
+  if (tab === 'admin') return '/app/admin';
+  return '/app/chat';
+};
+
+const viewFromPath = (pathname) => {
+  if (pathname.startsWith('/docs')) return 'docs';
+  if (pathname.startsWith('/farcaster')) return 'farcaster';
+  if (pathname.startsWith('/app')) return 'auth';
+  return 'landing';
+};
 
 export default function App() {
-  const [view, setView] = useState('landing');
+  const [view, setView] = useState(() => viewFromPath(window.location.pathname));
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorState, setErrorState] = useState(null);
-  const [activeTab, setActiveTab] = useState('chat');
+  const [activeTab, setActiveTab] = useState(() => tabFromPath(window.location.pathname, window.location.search));
   const [conversations, setConversations] = useState([]);
   const [activeConv, setActiveConv] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -33,10 +59,32 @@ export default function App() {
   const [sending, setSending] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [usage, setUsage] = useState({ text_count: 0, image_count: 0, month_key: '' });
-  const [initialTabSet, setInitialTabSet] = useState(false);
 
   const closeSidebar = () => setIsSidebarOpen(false);
   const openSidebar = () => setIsSidebarOpen(true);
+
+  const syncFromLocation = () => {
+    const { pathname, search } = window.location;
+    const nextView = viewFromPath(pathname);
+    setView(nextView);
+    if (nextView === 'auth' || nextView === 'app') {
+      setActiveTab(tabFromPath(pathname, search));
+    }
+  };
+
+  const navigateToTab = (tab) => {
+    const nextTab = tab === 'chat' || tab === 'images' || tab === 'settings' || tab === 'admin' ? tab : 'chat';
+    const nextPath = pathFromTab(nextTab);
+    if (window.location.pathname !== nextPath) {
+      window.history.pushState({}, '', nextPath);
+    }
+    setActiveTab(nextTab);
+  };
+
+  const handleSelectTab = (tab) => {
+    navigateToTab(tab);
+    closeSidebar();
+  };
 
   const extractWalletsFromUser = (user) => {
     if (!user) return [];
@@ -118,9 +166,14 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (window.location.pathname === '/farcaster') setView('farcaster');
-    if (window.location.pathname.startsWith('/docs')) {
-      setView('docs');
+    syncFromLocation();
+    const handlePop = () => syncFromLocation();
+    window.addEventListener('popstate', handlePop);
+    return () => window.removeEventListener('popstate', handlePop);
+  }, []);
+
+  useEffect(() => {
+    if (view === 'docs' || view === 'farcaster') {
       setLoading(false);
       return;
     }
@@ -164,17 +217,7 @@ export default function App() {
     });
 
     return () => subscription?.unsubscribe?.();
-  }, []);
-
-  useEffect(() => {
-    if (initialTabSet) return;
-    const params = new URLSearchParams(window.location.search);
-    const tab = params.get('tab');
-    if (tab === 'chat' || tab === 'images' || tab === 'settings') {
-      setActiveTab(tab);
-    }
-    setInitialTabSet(true);
-  }, [initialTabSet]);
+  }, [view]);
 
   const fetchInitialData = async (uid) => {
     try {
@@ -297,16 +340,23 @@ export default function App() {
     </div>
   `;
 
-  if (!session && view === 'landing') return html`<${LandingPage} onStart=${() => setView('auth')} />`;
-  if (!session && view === 'farcaster') return html`<${FarcasterPage} onStart=${() => setView('auth')} />`;
+  const startAuthFlow = () => {
+    window.history.pushState({}, '', '/app');
+    setView('auth');
+    setActiveTab('chat');
+  };
+
   if (view === 'docs') return html`<${DocsPage} />`;
+  if (view === 'farcaster') return html`<${FarcasterPage} onStart=${startAuthFlow} />`;
+  if (!session && view === 'landing') return html`<${LandingPage} onStart=${startAuthFlow} />`;
   if (!session) return html`<${AuthScreen} />`;
 
   return html`
-    <div className="flex min-h-[100dvh] md:h-screen bg-black text-white relative overflow-hidden">
+    <div className="flex min-h-[100dvh] md:h-[100dvh] bg-black text-white relative overflow-hidden">
       <img
         src=${ASSETS.mascot}
         className="pointer-events-none select-none absolute right-[-8%] top-1/2 -translate-y-1/2 w-[520px] opacity-5 blur-[1px] hidden md:block"
+        alt=""
         aria-hidden="true"
       />
 
@@ -332,7 +382,7 @@ export default function App() {
         </button>
         <${Sidebar}
           activeTab=${activeTab}
-          setActiveTab=${setActiveTab}
+          setActiveTab=${handleSelectTab}
           profile=${profile}
           conversations=${conversations}
           activeConv=${activeConv}
@@ -378,6 +428,28 @@ export default function App() {
             onOpenSidebar=${openSidebar}
             isSidebarOpen=${isSidebarOpen}
           />
+        `}
+
+        ${activeTab === 'admin' && html`
+          <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-8 md:p-12">
+            <div className="flex items-center gap-3 mb-6">
+              <button
+                className="md:hidden p-2 -ml-2 rounded-lg text-neutral-300 hover:text-white hover:bg-white/5 transition"
+                onClick=${openSidebar}
+                aria-label="Open navigation"
+                aria-controls="ba6-sidebar"
+                aria-expanded=${isSidebarOpen ? 'true' : 'false'}
+              >
+                <${Menu} size=${20} />
+              </button>
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tighter">Admin</h1>
+            </div>
+            <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 text-neutral-300">
+              ${profile?.is_admin
+                ? 'Admin dashboard coming soon.'
+                : 'Admin access required.'}
+            </div>
+          </div>
         `}
       </main>
     </div>

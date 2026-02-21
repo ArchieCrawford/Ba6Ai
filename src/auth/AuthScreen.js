@@ -52,13 +52,14 @@ export const AuthScreen = () => {
       <img
         src=${ASSETS.mascot}
         className="pointer-events-none select-none absolute right-[-6%] top-1/2 -translate-y-1/2 w-[360px] opacity-10 blur-[1px] hidden md:block"
+        alt=""
         aria-hidden="true"
       />
       <div className="w-full md:max-w-md bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-3xl ink-glow relative z-10">
         <div className="text-center mb-8 md:mb-10">
           <div className="relative w-16 h-16 mx-auto mb-4">
             <div className="absolute inset-0 bg-white/5 blur-xl rounded-full" />
-            <img src=${ASSETS.mascot} className="w-16 h-16 rounded-2xl relative z-10" />
+            <img src=${ASSETS.mascot} alt="BA6 AI" className="w-16 h-16 rounded-2xl relative z-10" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight">BA6 AI</h1>
         </div>
@@ -81,24 +82,51 @@ export const AuthScreen = () => {
 
           <form onSubmit=${handleEmailAuth} className="space-y-4">
             ${!isLogin && html`
-              <input
-                type="text" placeholder="Full Name" required
-                className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl outline-none focus:border-white transition"
-                value=${name} onChange=${(e) => setName(e.target.value)}
-              />
+              <div className="space-y-2">
+                <label htmlFor="fullName" className="text-xs font-semibold text-neutral-400">Full name</label>
+                <input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  placeholder="Full name"
+                  autoComplete="name"
+                  required
+                  className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0"
+                  value=${name}
+                  onChange=${(e) => setName(e.target.value)}
+                />
+              </div>
             `}
-            <input
-              type="email" placeholder="Email" required
-              className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl outline-none focus:border-white transition"
-              value=${email} onChange=${(e) => setEmail(e.target.value)}
-            />
-            <input
-              type="password" placeholder="Password" required
-              className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl outline-none focus:border-white transition"
-              value=${password} onChange=${(e) => setPassword(e.target.value)}
-            />
-            ${error && html`<p className="text-red-500 text-xs">${error}</p>`}
-            <button disabled=${loading} className="w-full border border-white/10 py-3 rounded-xl font-bold hover:bg-white/5 transition flex items-center justify-center gap-2">
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-xs font-semibold text-neutral-400">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Email"
+                autoComplete="email"
+                required
+                className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0"
+                value=${email}
+                onChange=${(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="password" className="text-xs font-semibold text-neutral-400">Password</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Password"
+                autoComplete=${isLogin ? 'current-password' : 'new-password'}
+                required
+                className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl focus:border-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0"
+                value=${password}
+                onChange=${(e) => setPassword(e.target.value)}
+              />
+            </div>
+            ${error && html`<p className="text-red-500 text-xs" role="alert">${error}</p>`}
+            <button disabled=${loading} className="w-full border border-white/10 py-3 rounded-xl font-bold hover:bg-white/5 transition flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0">
               ${loading && html`<${Loader2} className="animate-spin" size=${18} />`}
               ${isLogin ? 'Sign In' : 'Sign Up'}
             </button>
