@@ -4,6 +4,8 @@ import { requireUser, supabaseAdmin } from './_supabase';
 const DEFAULT_BASE_URL = ['https://', 'api.', 'venice', '.ai', '/api', '/v1'].join('');
 const BASE_URL = process.env.VENICE_BASE_URL || DEFAULT_BASE_URL;
 const DEFAULT_MODEL = process.env.VENICE_CHAT_MODEL || 'venice-uncensored';
+const STRIPE_PRO_PRICE_ID = process.env.STRIPE_PRO_PRICE_ID || '';
+const STRIPE_TEAM_PRICE_ID = process.env.STRIPE_TEAM_PRICE_ID || '';
 
 const MODEL_ALIASES: Record<string, string> = {
   'llama-3-8b': DEFAULT_MODEL,
@@ -36,8 +38,31 @@ const ensureUsage = async (userId: string, monthKey: string) => {
   return { text_count: 0, image_count: 0 };
 };
 
+const resolvePlanFromPrice = (priceId?: string | null) => {
+  if (!priceId) return null;
+  if (STRIPE_TEAM_PRICE_ID && priceId === STRIPE_TEAM_PRICE_ID) return 'team';
+  if (STRIPE_PRO_PRICE_ID && priceId === STRIPE_PRO_PRICE_ID) return 'pro';
+  return null;
+};
+
 const getPlan = async (userId: string) => {
   if (!supabaseAdmin) throw new Error('Supabase admin not configured.');
+  const { data: sub, error: subErr } = await supabaseAdmin
+    .from('subscription_status_all')
+    .select('price_id, subscription_status, current_period_end')
+    .eq('user_id', userId)
+    .order('current_period_end', { ascending: false })
+    .maybeSingle();
+
+  if (!subErr && sub) {
+    const status = (sub.subscription_status || '').toLowerCase();
+    const isActive = ['active', 'trialing', 'past_due'].includes(status);
+    if (isActive) {
+      const planFromStripe = resolvePlanFromPrice(sub.price_id);
+      if (planFromStripe) return planFromStripe;
+    }
+  }
+
   const { data, error } = await supabaseAdmin
     .from('profiles')
     .select('plan')
@@ -102,11 +127,14 @@ export const handler: Handler = async (event) => {
     }
 
     if (!supabaseAdmin) throw new Error('Supabase admin not configured.');
-    await supabaseAdmin
+    const { error: usageErr } = await supabaseAdmin
       .from('usage_monthly')
       .update({ text_count: usage.text_count + 1 })
       .eq('user_id', user.id)
-      .eq('month_key', monthKey);
+      .eq('month_key', monthKey)
+      .select('text_count')
+      .single();
+    if (usageErr) throw usageErr;
 
     const content = data?.choices?.[0]?.message?.content || '';
     return {

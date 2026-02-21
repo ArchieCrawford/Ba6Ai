@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { html } from '../../ui/html.js';
 import { ASSETS } from '../../assets/index.js';
-import { Plus, Loader2, Check, Menu } from 'lucide-react';
+import { Plus, Loader2, Check, Menu, ExternalLink } from 'lucide-react';
 import { supabase } from '../../api/supabaseClient.js';
-import { ethers } from 'ethers';
+import { resolvePlanFromSubscription } from '../../utils/billing.js';
 
 const PLAN_LABELS = {
   free: 'Free',
@@ -17,9 +17,12 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
   const [loading, setLoading] = useState(false);
   const [upgradeLoading, setUpgradeLoading] = useState(false);
   const [walletLoading, setWalletLoading] = useState(false);
+  const [billingLoading, setBillingLoading] = useState(false);
   const [wallets, setWallets] = useState([]);
+  const [subscription, setSubscription] = useState(null);
   const [error, setError] = useState('');
   const plan = (profile?.plan || 'free').toLowerCase();
+  const currentPlan = resolvePlanFromSubscription(subscription, plan);
 
   useEffect(() => {
     if (profile) {
@@ -73,10 +76,26 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
     }
   };
 
+  const loadSubscription = async () => {
+    if (!userId) return;
+    try {
+      const { data, error: err } = await supabase
+        .from('subscription_status')
+        .select('user_id, price_id, subscription_status, current_period_end')
+        .eq('user_id', userId)
+        .maybeSingle();
+      if (err) return;
+      setSubscription(data || null);
+    } catch (err) {
+      // Ignore missing view or sync engine not installed yet.
+    }
+  };
+
   useEffect(() => {
     if (userId) {
       loadProfile();
       loadWallets();
+      loadSubscription();
     }
   }, [userId]);
 
@@ -133,44 +152,53 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
     }
   };
 
-  const handleWalletConnect = async () => {
-    setWalletLoading(true);
+  const handleBillingPortal = async () => {
+    setBillingLoading(true);
     setError('');
     try {
       const token = await getAccessToken();
       if (!token) throw new Error('Not signed in.');
-      if (!window.ethereum) throw new Error('No wallet found.');
-
-      const nonceRes = await fetch('/.netlify/functions/wallet-nonce', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const nonceBody = await nonceRes.json();
-      if (!nonceRes.ok) throw new Error(nonceBody.error || 'Nonce request failed.');
-
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const address = await signer.getAddress();
-      const signature = await signer.signMessage(nonceBody.message);
-      const network = await provider.getNetwork();
-
-      const verifyRes = await fetch('/.netlify/functions/wallet-verify', {
+      const res = await fetch('/.netlify/functions/billing-portal', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          address,
-          signature,
-          nonce: nonceBody.nonce,
-          chain_id: Number(network.chainId)
-        })
+        }
       });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || 'Billing portal failed.');
+      if (body.url) window.location.href = body.url;
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBillingLoading(false);
+    }
+  };
 
-      const verifyBody = await verifyRes.json();
-      if (!verifyRes.ok) throw new Error(verifyBody.error || 'Wallet verification failed.');
+  const handleWalletConnect = async (chain) => {
+    setWalletLoading(true);
+    setError('');
+    try {
+      const { error: authError } = await supabase.auth.signInWithWeb3({ chain });
+      if (authError) throw authError;
+      await loadWallets();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setWalletLoading(false);
+    }
+  };
 
+  const handleWalletUnlink = async (address) => {
+    if (!userId) return;
+    setWalletLoading(true);
+    setError('');
+    try {
+      const { error: err } = await supabase
+        .from('wallets')
+        .delete()
+        .eq('user_id', userId)
+        .eq('address', address);
+      if (err) throw err;
       await loadWallets();
     } catch (err) {
       setError(err.message);
@@ -244,8 +272,10 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
           <div className="p-4 md:p-6 rounded-2xl border border-white/5 bg-[#0a0a0a] space-y-4">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
               <div>
-                <div className="font-bold text-lg capitalize">${PLAN_LABELS[plan] || 'Free'} Plan</div>
-                <div className="text-neutral-500 text-sm">Upgrade instantly with Stripe.</div>
+                <div className="font-bold text-lg capitalize">${PLAN_LABELS[currentPlan] || 'Free'} Plan</div>
+                <div className="text-neutral-500 text-sm">
+                  ${subscription?.subscription_status ? `Status: ${subscription.subscription_status}` : 'Upgrade instantly with Stripe.'}
+                </div>
               </div>
               <div className="text-xs text-neutral-500 uppercase tracking-widest">Current</div>
             </div>
@@ -259,14 +289,23 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
                   </div>
                   <button
                     onClick=${() => handleUpgrade(tier)}
-                    disabled=${upgradeLoading || plan === tier}
-                    className=${`px-4 py-2 rounded-xl font-bold text-sm transition ${plan === tier ? 'bg-white/10 text-white' : 'bg-white text-black hover:bg-neutral-200'}`}
+                    disabled=${upgradeLoading || currentPlan === tier}
+                    className=${`px-4 py-2 rounded-xl font-bold text-sm transition ${currentPlan === tier ? 'bg-white/10 text-white' : 'bg-white text-black hover:bg-neutral-200'}`}
                   >
-                    ${plan === tier ? html`<span className="inline-flex items-center gap-2"><${Check} size=${14} /> Active</span>` : 'Upgrade'}
+                    ${currentPlan === tier ? html`<span className="inline-flex items-center gap-2"><${Check} size=${14} /> Active</span>` : 'Upgrade'}
                   </button>
                 </div>
               `)}
             </div>
+
+            <button
+              onClick=${handleBillingPortal}
+              disabled=${billingLoading}
+              className="mt-2 w-full md:w-auto px-4 py-2 rounded-xl border border-white/10 text-sm font-semibold text-neutral-300 hover:text-white hover:border-white transition inline-flex items-center gap-2"
+            >
+              ${billingLoading && html`<${Loader2} className="animate-spin" size=${14} />`}
+              <${ExternalLink} size=${14} /> Manage Billing
+            </button>
           </div>
         </section>
 
@@ -278,18 +317,34 @@ export const SettingsView = ({ profile, session, onProfileUpdated, onOpenSidebar
                 ${wallets.map((wallet) => html`
                   <div className="px-4 py-3 rounded-xl border border-white/10 bg-[#0a0a0a] text-xs text-neutral-300 flex items-center justify-between gap-3">
                     <span className="truncate min-w-0">${wallet.address}</span>
-                    <span className="text-neutral-500 whitespace-nowrap">Chain ${wallet.chain_id || '-'}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-neutral-500 whitespace-nowrap">Chain ${wallet.chain_id || '-'}</span>
+                      <button
+                        onClick=${() => handleWalletUnlink(wallet.address)}
+                        className="text-[10px] uppercase tracking-widest text-neutral-500 hover:text-white transition"
+                      >
+                        Unlink
+                      </button>
+                    </div>
                   </div>
                 `)}
               </div>
             `}
             <button
-              onClick=${handleWalletConnect}
+              onClick=${() => handleWalletConnect('ethereum')}
               disabled=${walletLoading}
               className="w-full p-4 md:p-6 rounded-2xl border border-white/5 bg-[#0a0a0a] border-dashed flex items-center justify-center gap-2 text-neutral-500 hover:text-white hover:border-white transition"
             >
               ${walletLoading && html`<${Loader2} className="animate-spin" size=${16} />`}
-              <${Plus} size=${18} /> Connect Wallet
+              <${Plus} size=${18} /> Link Ethereum Wallet
+            </button>
+            <button
+              onClick=${() => handleWalletConnect('solana')}
+              disabled=${walletLoading}
+              className="w-full p-4 md:p-6 rounded-2xl border border-white/5 bg-[#0a0a0a] border-dashed flex items-center justify-center gap-2 text-neutral-500 hover:text-white hover:border-white transition"
+            >
+              ${walletLoading && html`<${Loader2} className="animate-spin" size=${16} />`}
+              <${Plus} size=${18} /> Link Solana Wallet
             </button>
           </div>
         </section>

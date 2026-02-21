@@ -82,7 +82,6 @@ The app will fetch the model list from `/.netlify/functions/venice-models`.
   - `NEYNAR_API_KEY` (optional, used by `neynar-validate` function)
   - `NEYNAR_BASE_URL` (optional, used by `neynar-validate` function)
   - `STRIPE_SECRET_KEY`
-  - `STRIPE_WEBHOOK_SECRET`
   - `STRIPE_PRO_PRICE_ID`
   - `STRIPE_TEAM_PRICE_ID`
   - `SITE_URL`
@@ -90,3 +89,4 @@ The app will fetch the model list from `/.netlify/functions/venice-models`.
 Notes:
 - `env.js` is **not** generated during Netlify builds. The client fetches public config at runtime from `/.netlify/functions/public-config`.
 - Do not expose private server keys (e.g., Venice API key) to the client.
+- Stripe webhooks are handled by the Supabase Stripe Sync Engine (stripe.* schema).

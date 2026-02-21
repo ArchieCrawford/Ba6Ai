@@ -14,6 +14,7 @@ import { ChatView } from '../features/chat/ChatView.js';
 import { ImagesView } from '../features/images/ImagesView.js';
 import { SettingsView } from '../features/settings/SettingsView.js';
 import { DocsPage } from '../docs/DocsPage.js';
+import { resolvePlanFromSubscription } from '../utils/billing.js';
 import { Loader2, X } from 'lucide-react';
 
 export default function App() {
@@ -39,6 +40,55 @@ export default function App() {
   const closeSidebar = () => setIsSidebarOpen(false);
   const openSidebar = () => setIsSidebarOpen(true);
 
+  const extractWalletsFromUser = (user) => {
+    if (!user) return [];
+    const wallets = [];
+    const seen = new Set();
+
+    const addWallet = (address, chainId) => {
+      if (!address) return;
+      const key = `${address}-${chainId || ''}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      wallets.push({ address, chain_id: chainId });
+    };
+
+    const meta = user.user_metadata || {};
+    const metaAddress = meta.wallet_address || meta.address || meta.public_key || meta.publicKey;
+    if (metaAddress) addWallet(metaAddress, meta.chain_id || meta.chainId);
+
+    const identities = Array.isArray(user.identities) ? user.identities : [];
+    identities.forEach((identity) => {
+      const data = identity?.identity_data || {};
+      const address = data.wallet_address || data.address || data.public_key || data.publicKey || data.sub;
+      const chainId = data.chain_id || data.chainId;
+      addWallet(address, chainId);
+    });
+
+    return wallets;
+  };
+
+  const syncWalletsFromSession = async (s) => {
+    if (!s?.user || !supabase) return;
+    const userId = s.user.id;
+    const wallets = extractWalletsFromUser(s.user);
+    if (!wallets.length) return;
+    try {
+      await supabase
+        .from('wallets')
+        .upsert(
+          wallets.map((wallet) => ({
+            user_id: userId,
+            address: wallet.address,
+            chain_id: wallet.chain_id ?? null
+          })),
+          { onConflict: 'address', ignoreDuplicates: true }
+        );
+    } catch (err) {
+      // Ignore wallet sync errors to avoid blocking sign-in.
+    }
+  };
+
   useEffect(() => {
     if (window.location.pathname === '/farcaster') setView('farcaster');
     if (window.location.pathname.startsWith('/docs')) {
@@ -63,6 +113,7 @@ export default function App() {
       setSession(s);
       if (s) {
         setView('app');
+        syncWalletsFromSession(s);
         fetchInitialData(s.user.id);
         supabase?.auth?.startAutoRefresh?.();
       }
@@ -79,6 +130,7 @@ export default function App() {
       setSession(s);
       if (s) {
         setView('app');
+        syncWalletsFromSession(s);
         fetchInitialData(s.user.id);
       }
     });
@@ -90,7 +142,14 @@ export default function App() {
     try {
       const { data: p, error: profileErr } = await dbApi.getProfile(uid);
       if (profileErr) { setErrorState(profileErr); return; }
-      setProfile(p);
+      let nextProfile = p;
+
+      const { data: sub, error: subErr } = await dbApi.getSubscriptionStatus(uid);
+      if (!subErr) {
+        const derivedPlan = resolvePlanFromSubscription(sub, (p?.plan || 'free').toLowerCase());
+        nextProfile = { ...(p || {}), plan: derivedPlan };
+      }
+      setProfile(nextProfile);
 
       const { data: convs, error: convsErr } = await dbApi.getConversations();
       if (convsErr) { setErrorState(convsErr); return; }

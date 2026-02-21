@@ -75,5 +75,15 @@ export const dbApi = {
       .eq('month_key', monthKey)
       .maybeSingle();
     return { data, error: handleApiError(error, 'usage_monthly').error };
+  },
+
+  getSubscriptionStatus: async (userId) => {
+    requireSupabase();
+    const { data, error } = await supabase
+      .from('subscription_status')
+      .select('user_id, price_id, subscription_status, current_period_end')
+      .eq('user_id', userId)
+      .maybeSingle();
+    return { data, error: handleApiError(error, 'subscription_status').error };
   }
 };

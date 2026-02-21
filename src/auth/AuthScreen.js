@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { html } from '../ui/html.js';
 import { ASSETS } from '../assets/index.js';
 import { authApi } from '../api/authApi.js';
+import { supabase } from '../api/supabaseClient.js';
 import { Loader2, Wallet } from 'lucide-react';
-import { ethers } from 'ethers';
 
 export const AuthScreen = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -34,15 +34,12 @@ export const AuthScreen = () => {
   };
 
   const handleWalletAuth = async () => {
-    if (!window.ethereum) return alert('No wallet found');
     setLoading(true);
+    setError('');
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const address = await signer.getAddress();
-      const nonce = `Sign this message to login to BA6 AI: ${Math.random()}`;
-      await signer.signMessage(nonce);
-      alert(`Wallet ${address.substring(0, 6)}... authenticated! (Connecting to profile...)`);
+      if (!supabase) throw new Error('Supabase is not configured.');
+      const { error: authError } = await supabase.auth.signInWithWeb3({ chain: 'ethereum' });
+      if (authError) throw authError;
     } catch (err) {
       setError(err.message);
     } finally {

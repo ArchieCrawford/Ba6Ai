@@ -7,7 +7,9 @@ const OUT_PATH = path.join(ROOT, 'env.js');
 
 const PUBLIC_KEYS = new Set([
   'SUPABASE_URL',
-  'SUPABASE_ANON_KEY'
+  'SUPABASE_ANON_KEY',
+  'STRIPE_PRO_PRICE_ID',
+  'STRIPE_TEAM_PRICE_ID'
 ]);
 
 const readEnvFile = () => {
