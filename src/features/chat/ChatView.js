@@ -13,8 +13,8 @@ export const ChatView = ({
   onOpenSidebar,
   isSidebarOpen
 }) => html`
-  <div className="flex-1 flex flex-col">
-    <header className="px-3 md:px-6 h-14 md:h-16 border-b border-white/5 flex items-center justify-between gap-2 md:gap-3">
+  <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+    <header className="shrink-0 px-3 md:px-6 h-14 md:h-16 border-b border-white/5 flex items-center justify-between gap-2 md:gap-3">
       <div className="flex items-center gap-3 min-w-0">
         <button
           className="md:hidden p-2 -ml-2 rounded-lg text-neutral-300 hover:text-white hover:bg-white/5 transition"
@@ -57,7 +57,7 @@ export const ChatView = ({
       `}
     </div>
 
-    <footer className="p-3 md:p-6 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:pb-6 bg-black border-t border-white/5 safe-bottom">
+    <footer className="shrink-0 p-3 md:p-6 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:pb-6 bg-black border-t border-white/5 safe-bottom">
       <form onSubmit=${onSend} className="w-full md:max-w-3xl md:mx-auto flex items-center gap-2 bg-[#0a0a0a] border border-white/10 p-2 rounded-2xl focus-within:border-white transition">
         <label className="sr-only" htmlFor="chatMessage">Message</label>
         <input
