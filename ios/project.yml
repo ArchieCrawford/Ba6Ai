@@ -62,6 +62,8 @@ targets:
       - package: MLXSwiftExamples
         product: MLXLLM
       - package: MLXSwiftExamples
+        product: MLXVLM
+      - package: MLXSwiftExamples
         product: MLXLMCommon
       - package: GRDB
         product: GRDB

@@ -17,12 +17,15 @@ struct RootView: View {
 private struct MainTabs: View {
     @State private var selection: Tab = .chat
 
-    enum Tab: Hashable { case chat, files, settings }
+    enum Tab: Hashable { case chat, video, files, settings }
 
     var body: some View {
         TabView(selection: $selection) {
             Tab("Chat", systemImage: "bubble.left.and.bubble.right", value: Tab.chat) {
                 ChatView()
+            }
+            Tab("Video", systemImage: "film", value: Tab.video) {
+                VideoView()
             }
             Tab("Files", systemImage: "doc.text.magnifyingglass", value: Tab.files) {
                 FilesView()

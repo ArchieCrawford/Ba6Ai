@@ -37,11 +37,13 @@ ios/Sources/
 ├── App/                   @main entry + AppModel bootstrap
 ├── Core/
 │   ├── LLMEngine/         MLX wrapper + streaming, ModelCatalog
+│   ├── VideoEngine/       VLM understanding + Metal/AVFoundation gen
 │   ├── Memory/            GRDB store + vector index
 │   ├── Identity/          Secure Enclave + software fallback
 │   └── Crypto/            Request signing for Cloud Boost
 ├── Features/
 │   ├── Chat/              Liquid Glass chat surface
+│   ├── Video/             Understand + Generate pane
 │   ├── Settings/          Identity + memory controls
 │   ├── Camera/            Vision OCR ingest (Phase 4)
 │   ├── ShareExtension/    Share-sheet target (Phase 4, stub)
@@ -50,6 +52,28 @@ ios/Sources/
     ├── CloudBoost/        Optional signed cloud offload
     └── Sync/              CloudKit mirror (Phase 5, stub)
 ```
+
+### Video pipeline
+
+`Core/VideoEngine` hosts two independent paths:
+
+- **Understanding** — `VideoEngine` actor loads a Qwen 2.5-VL VLM via
+  `MLXVLM`. `VideoFrameSampler` pulls 8 evenly-spaced frames from an
+  `AVURLAsset`; those frames + the user's question stream back through
+  the same `TokenIterator` pattern as text chat.
+- **Generation** — `VideoGenerator` + `MetalRenderer` + `VideoWriter`.
+  The full pipeline is live and produces a valid HEVC .mp4: the
+  renderer owns a `MTLDevice`, a `CVMetalTextureCache`, and three
+  compute kernels in `Shaders.metal` (`identity`, `posterize`,
+  `latent_composite`). The diffusion model that fills in each frame
+  is stubbed with a prompt-seeded gradient until an MLX port of
+  LTX Video / Wan 2.1 lands — at that point `produceLatent(...)`
+  swaps in for the gradient and the rest of the path is unchanged.
+
+Why raw Metal when MLX already targets Metal? MLX handles inference
+ops; the renderer is the layer *around* MLX — tone mapping, upscaling,
+temporal effects, and zero-copy texture ↔ `CVPixelBuffer` handoff into
+`AVAssetWriter`. That's what `Shaders.metal` is for.
 
 ## Phases shipped in this scaffold
 
