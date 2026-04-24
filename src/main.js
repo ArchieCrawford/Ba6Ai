@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './app/App.js';
+import { html } from './ui/html.js';
+import { LandingPage } from './pages/LandingPage.js';
 
 const container = document.getElementById('root');
-const root = createRoot(container);
-root.render(React.createElement(App));
+createRoot(container).render(html`<${LandingPage} />`);

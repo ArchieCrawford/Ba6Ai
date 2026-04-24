@@ -4,22 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
-    <title>BA6 AI – Programmable Intelligence</title>
-    <meta name="description" content="Build with decentralized AI compute. Chat. Images. Video." />
-    
-    <!-- Open Graph -->
+    <title>BA6 AI — Private intelligence for Apple devices</title>
+    <meta name="description" content="On-device AI for iPhone and iPad. MLX-powered. Secure Enclave identity. Memory you control." />
+
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://ba6ai.com" />
-    <meta property="og:title" content="BA6 AI – Programmable Intelligence" />
-    <meta property="og:description" content="Build with decentralized AI compute. Chat. Images. Video." />
+    <meta property="og:title" content="BA6 AI — Private intelligence for Apple devices" />
+    <meta property="og:description" content="On-device AI for iPhone and iPad. MLX-powered. Secure Enclave identity. Memory you control." />
     <meta property="og:image" content="https://ba6ai.com/ba6-preview.png" />
-    
-    <!-- Twitter -->
+
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="BA6 AI – Programmable Intelligence" />
-    <meta name="twitter:description" content="Build with decentralized AI compute." />
+    <meta name="twitter:title" content="BA6 AI — Private intelligence for Apple devices" />
+    <meta name="twitter:description" content="On-device AI. Encrypted identity. Memory you control." />
     <meta name="twitter:image" content="https://ba6ai.com/ba6-preview.png" />
-    
+
     <link rel="icon" type="image/png" href="./src/assets/favicon.png">
     <link rel="stylesheet" href="./src/styles/tailwind.generated.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,55 +31,13 @@
           "react-dom": "https://esm.sh/react-dom@18.2.0",
           "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
           "lucide-react": "https://esm.sh/lucide-react@0.344.0",
-          "clsx": "https://esm.sh/clsx@2.1.0",
-          "tailwind-merge": "https://esm.sh/tailwind-merge@2.2.1",
-          "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.39.7",
-          "date-fns": "https://esm.sh/date-fns@3.3.1",
-          "htm": "https://esm.sh/htm@3.1.1",
-          "ethers": "https://esm.sh/ethers@6.11.1"
+          "htm": "https://esm.sh/htm@3.1.1"
         }
       }
     </script>
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      window.__ENV__ = window.__ENV__ || {};
-
-      const loadEnvScript = async () => {
-        try {
-          const response = await fetch('./env.js', { cache: 'no-store' });
-          if (!response.ok) return;
-          const contentType = response.headers.get('content-type') || '';
-          if (contentType.includes('text/html')) return;
-          const text = await response.text();
-          if (!text.trim().startsWith('window.__ENV__')) return;
-          // eslint-disable-next-line no-new-func
-          new Function(text)();
-        } catch (err) {
-          // Ignore if env.js is missing or invalid
-        }
-      };
-
-      const loadPublicConfig = async () => {
-        try {
-          const response = await fetch('/.netlify/functions/public-config');
-          if (!response.ok) return;
-          const data = await response.json();
-          window.__ENV__ = { ...window.__ENV__, ...data };
-        } catch (err) {
-          // Ignore if functions are not available (e.g., static local server)
-        }
-      };
-
-      (async () => {
-        await loadEnvScript();
-        await loadPublicConfig();
-        const main = document.createElement('script');
-        main.type = 'module';
-        main.src = './src/main.js';
-        document.body.appendChild(main);
-      })();
-    </script>
+    <script type="module" src="./src/main.js"></script>
   </body>
 </html>
