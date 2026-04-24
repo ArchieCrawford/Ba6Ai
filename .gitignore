@@ -2,6 +2,7 @@
 .env.*
 !.env.example
 env.js
+node_modules
 
 # iOS / Xcode
 ios/Ba6Ai.xcodeproj/
