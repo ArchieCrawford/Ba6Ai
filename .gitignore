@@ -3,3 +3,14 @@
 !.env.example
 env.js
 node_modules
+
+# iOS / Xcode
+ios/Ba6Ai.xcodeproj/
+ios/build/
+ios/DerivedData/
+ios/.build/
+ios/Pods/
+ios/*.xcworkspace
+.DS_Store
+xcuserdata/
+*.xcuserstate
