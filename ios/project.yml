@@ -22,9 +22,6 @@ packages:
   MLXSwiftExamples:
     url: https://github.com/ml-explore/mlx-swift-examples
     from: "2.21.0"
-  GRDB:
-    url: https://github.com/groue/GRDB.swift
-    from: "6.29.0"
 
 targets:
   Ba6Ai:
@@ -49,7 +46,20 @@ targets:
         NSCameraUsageDescription: BA6 AI uses the camera to understand images you share with it, on-device.
         NSPhotoLibraryUsageDescription: BA6 AI reads images you pick so it can describe or reason about them.
         NSFaceIDUsageDescription: BA6 AI uses Face ID to unlock your private memory and identity key.
+        NSUserActivityTypes:
+          - AskBA6Intent
+          - RememberFactIntent
         ITSAppUsesNonExemptEncryption: false
+    entitlements:
+      path: Resources/Ba6Ai.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.ai.ba6.Ba6Ai
+        com.apple.developer.icloud-services:
+          - CloudKit
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.ai.ba6.Ba6Ai
+        aps-environment: development
     dependencies:
       - package: MLXSwift
         product: MLX
@@ -65,8 +75,12 @@ targets:
         product: MLXVLM
       - package: MLXSwiftExamples
         product: MLXLMCommon
-      - package: GRDB
-        product: GRDB
+      - sdk: CoreData.framework
+      - sdk: CoreML.framework
+      - sdk: NaturalLanguage.framework
+      - sdk: AppIntents.framework
+      - sdk: UserNotifications.framework
+      - sdk: CloudKit.framework
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: ai.ba6.Ba6Ai

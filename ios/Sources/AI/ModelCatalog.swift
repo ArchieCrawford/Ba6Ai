@@ -7,14 +7,14 @@ import MLXLLM
 /// Start with small 3B-class instruct models quantized to 4-bit so they fit
 /// comfortably on an iPhone 15 Pro / 16 family. Larger picks are opt-in via
 /// the Boost toggle in Settings.
-enum BA6Model: String, CaseIterable, Identifiable, Hashable, Sendable {
+public enum BA6Model: String, CaseIterable, Identifiable, Hashable, Sendable {
     case qwen2_5_3b_4bit
     case llama3_2_3b_4bit
     case phi3_5_mini_4bit
 
-    var id: String { rawValue }
+    public var id: String { rawValue }
 
-    var displayName: String {
+    public var displayName: String {
         switch self {
         case .qwen2_5_3b_4bit: "Qwen 2.5 3B · 4-bit"
         case .llama3_2_3b_4bit: "Llama 3.2 3B · 4-bit"
@@ -22,7 +22,7 @@ enum BA6Model: String, CaseIterable, Identifiable, Hashable, Sendable {
         }
     }
 
-    var approximateSizeMB: Int {
+    public var approximateSizeMB: Int {
         switch self {
         case .qwen2_5_3b_4bit: 1900
         case .llama3_2_3b_4bit: 1900
@@ -33,7 +33,7 @@ enum BA6Model: String, CaseIterable, Identifiable, Hashable, Sendable {
     /// MLX model configuration — resolved by `LLMModelFactory` which pulls
     /// the weights from Hugging Face on first use and caches them in the
     /// app's sandbox. Adjust the repo IDs if you self-host.
-    var configuration: ModelConfiguration {
+    public var configuration: ModelConfiguration {
         switch self {
         case .qwen2_5_3b_4bit:
             ModelConfiguration(id: "mlx-community/Qwen2.5-3B-Instruct-4bit")
@@ -44,5 +44,5 @@ enum BA6Model: String, CaseIterable, Identifiable, Hashable, Sendable {
         }
     }
 
-    static let `default`: BA6Model = .qwen2_5_3b_4bit
+    public static let `default`: BA6Model = .qwen2_5_3b_4bit
 }

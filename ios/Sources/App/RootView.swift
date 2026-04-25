@@ -4,52 +4,80 @@ struct RootView: View {
     @Environment(AppModel.self) private var app
 
     var body: some View {
-        if let error = app.bootError {
-            BootErrorView(message: error)
-        } else if app.isReady {
-            MainTabs()
-        } else {
-            BootingView()
+        Group {
+            if let error = app.bootError {
+                BootErrorView(message: error)
+            } else if app.isReady {
+                MainShell()
+            } else {
+                BootingView()
+            }
         }
+        .animation(Theme.Motion.standard, value: app.isReady)
     }
 }
 
-private struct MainTabs: View {
+// MARK: - Main shell with floating Liquid Glass tab bar
+
+private struct MainShell: View {
+    enum Tab: Hashable, Identifiable {
+        case chat, memory, video, settings
+        var id: Tab { self }
+    }
+
     @State private var selection: Tab = .chat
 
-    enum Tab: Hashable { case chat, video, files, settings }
-
     var body: some View {
-        TabView(selection: $selection) {
-            Tab("Chat", systemImage: "bubble.left.and.bubble.right", value: Tab.chat) {
-                ChatView()
-            }
-            Tab("Video", systemImage: "film", value: Tab.video) {
-                VideoView()
-            }
-            Tab("Files", systemImage: "doc.text.magnifyingglass", value: Tab.files) {
-                FilesView()
-            }
-            Tab("Settings", systemImage: "gearshape", value: Tab.settings) {
-                SettingsView()
+        ZStack(alignment: .bottom) {
+            Theme.backdrop
+
+            content
+                .padding(.bottom, 88)             // make room for the floating tab bar
+
+            GlassTabBar(
+                selection: $selection,
+                items: [
+                    .init(id: .chat,     title: "Chat",     icon: "bubble.left.and.bubble.right"),
+                    .init(id: .memory,   title: "Memory",   icon: "brain"),
+                    .init(id: .video,    title: "Video",    icon: "film"),
+                    .init(id: .settings, title: "Settings", icon: "gearshape")
+                ]
+            )
+        }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        ZStack {
+            switch selection {
+            case .chat:     ChatView()
+            case .memory:   NavigationStack { MemoryView() }
+            case .video:    VideoView()
+            case .settings: SettingsView()
             }
         }
-        .tabViewStyle(.sidebarAdaptable)
+        .transition(.opacity.combined(with: .scale(scale: 0.985)))
+        .id(selection)
+        .animation(Theme.Motion.standard, value: selection)
     }
 }
+
+// MARK: - Boot states
 
 private struct BootingView: View {
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
-            VStack(spacing: 20) {
-                ProgressView().controlSize(.large).tint(.white)
-                Text("Waking up BA6 AI")
-                    .font(.system(.body, design: .rounded, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.8))
+            Theme.backdrop
+            GlassPanel(radius: Theme.Radius.panel) {
+                VStack(spacing: Theme.Spacing.lg) {
+                    ProgressView().controlSize(.large).tint(.white)
+                    Text("Waking up BA6 AI")
+                        .font(.system(.body, design: .rounded, weight: .medium))
+                        .foregroundStyle(.white.opacity(0.85))
+                }
+                .padding(.horizontal, 12)
             }
-            .padding(24)
-            .glassEffect(.regular, in: .rect(cornerRadius: 28))
+            .frame(maxWidth: 320)
         }
     }
 }
@@ -59,18 +87,18 @@ private struct BootErrorView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
-            VStack(alignment: .leading, spacing: 12) {
-                Label("Startup failed", systemImage: "exclamationmark.triangle.fill")
-                    .font(.headline)
-                Text(message)
-                    .font(.footnote.monospaced())
-                    .foregroundStyle(.secondary)
-                    .textSelection(.enabled)
+            Theme.backdrop
+            GlassPanel(radius: Theme.Radius.panel) {
+                VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+                    Label("Startup failed", systemImage: "exclamationmark.triangle.fill")
+                        .font(.headline)
+                    Text(message)
+                        .font(.footnote.monospaced())
+                        .foregroundStyle(.secondary)
+                        .textSelection(.enabled)
+                }
             }
-            .padding(20)
             .frame(maxWidth: 420)
-            .glassEffect(.regular, in: .rect(cornerRadius: 24))
             .padding()
         }
     }

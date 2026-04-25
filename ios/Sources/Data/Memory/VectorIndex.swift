@@ -32,6 +32,11 @@ final class VectorIndex: @unchecked Sendable {
         entries.removeAll(keepingCapacity: false)
     }
 
+    func remove(id: String) {
+        lock.lock(); defer { lock.unlock() }
+        entries.removeAll { $0.id == id }
+    }
+
     func topK(query: [Float], k: Int) -> [String] {
         let qNorm = Self.l2(query)
         guard qNorm > 0 else { return [] }

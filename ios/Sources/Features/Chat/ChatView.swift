@@ -15,8 +15,9 @@ struct ChatView: View {
         .task {
             guard vm == nil,
                   let engine = app.engine,
-                  let memory = app.memory else { return }
-            let new = ChatViewModel(engine: engine, memory: memory)
+                  let memory = app.memory,
+                  let context = app.memoryContext else { return }
+            let new = ChatViewModel(engine: engine, memory: memory, memoryContext: context)
             vm = new
             await new.onAppear()
         }
@@ -29,23 +30,22 @@ private struct ChatSurface: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
-                backdrop
+                Theme.backdrop
 
                 ScrollViewReader { proxy in
                     ScrollView {
-                        LazyVStack(spacing: 12) {
+                        LazyVStack(spacing: Theme.Spacing.md) {
                             ForEach(vm.bubbles) { bubble in
-                                MessageBubble(bubble: bubble)
-                                    .id(bubble.id)
+                                MessageBubble(bubble: bubble).id(bubble.id)
                             }
-                            Color.clear.frame(height: 120).id("bottom")
+                            Color.clear.frame(height: 140).id("bottom")
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.top, 12)
+                        .padding(.horizontal, Theme.Spacing.lg)
+                        .padding(.top, Theme.Spacing.md)
                     }
                     .scrollDismissesKeyboard(.interactively)
                     .onChange(of: vm.bubbles.last?.content) { _, _ in
-                        withAnimation(.easeOut(duration: 0.15)) {
+                        withAnimation(Theme.Motion.stream) {
                             proxy.scrollTo("bottom", anchor: .bottom)
                         }
                     }
@@ -57,26 +57,31 @@ private struct ChatSurface: View {
                     onSend: { vm.send() },
                     onStop: { vm.stop() }
                 )
-                .padding(.horizontal, 12)
-                .padding(.bottom, 8)
+                .padding(.horizontal, Theme.Spacing.md)
+                .padding(.bottom, Theme.Spacing.sm)
             }
             .navigationTitle("BA6 AI")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    ModelBadge(state: vm.modelState, selected: vm.selectedModel)
+                    GlassChip(
+                        label: vm.providerLabel,
+                        icon: "cpu",
+                        status: vm.providerStatus
+                    )
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        ForEach(BA6Model.allCases) { m in
+                        ForEach(InferencePreference.allCases, id: \.self) { pref in
                             Button {
-                                Task { await vm.loadModel(m) }
+                                vm.preference = pref
                             } label: {
-                                Label(m.displayName, systemImage: m == vm.selectedModel ? "checkmark" : "")
+                                Label(label(for: pref),
+                                      systemImage: vm.preference == pref ? "checkmark" : "")
                             }
                         }
                     } label: {
-                        Image(systemName: "cpu")
+                        Image(systemName: "slider.horizontal.3")
                     }
                     .buttonStyle(.glass)
                 }
@@ -84,50 +89,11 @@ private struct ChatSurface: View {
         }
     }
 
-    private var backdrop: some View {
-        LinearGradient(
-            colors: [.black, Color(white: 0.05), .black],
-            startPoint: .top,
-            endPoint: .bottom
-        )
-        .ignoresSafeArea()
-    }
-}
-
-// MARK: - Model badge
-
-private struct ModelBadge: View {
-    let state: LLMEngine.State
-    let selected: BA6Model
-
-    var body: some View {
-        HStack(spacing: 6) {
-            Circle()
-                .fill(color)
-                .frame(width: 8, height: 8)
-            Text(label)
-                .font(.footnote.weight(.medium))
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .glassEffect(.regular, in: .capsule)
-    }
-
-    private var label: String {
-        switch state {
-        case .idle: "Idle"
-        case .loading(_, let p): "Loading \(Int(p * 100))%"
-        case .ready: selected.displayName
-        case .failed: "Failed"
-        }
-    }
-
-    private var color: Color {
-        switch state {
-        case .idle: .gray
-        case .loading: .yellow
-        case .ready: .green
-        case .failed: .red
+    private func label(for pref: InferencePreference) -> String {
+        switch pref {
+        case .auto:       "Auto (smart)"
+        case .localOnly:  "On-device only"
+        case .cloudBoost: "Cloud Boost"
         }
     }
 }

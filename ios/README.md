@@ -1,15 +1,17 @@
 # BA6 AI — iOS
 
-Native iOS app. SwiftUI + Liquid Glass. MLX on-device inference.
-Secure Enclave identity. SQLite + vector-indexed memory.
+Native iOS app. SwiftUI + Liquid Glass. MLX on-device inference with
+Core ML and remote fallbacks. Secure Enclave identity. Core Data +
+CloudKit memory. Metal video pipeline. App Intents for Siri/Shortcuts.
 
 ## Requirements
 
 - **macOS 15+ on Apple Silicon**
-- **Xcode 26** (needed for the Liquid Glass APIs — `glassEffect`, `GlassEffectContainer`, `.buttonStyle(.glass)`)
+- **Xcode 26** (Liquid Glass APIs: `glassEffect`, `GlassEffectContainer`, `.buttonStyle(.glass)`)
 - **iOS 26** deployment target
 - **XcodeGen** — `brew install xcodegen`
-- Physical device with **A17 Pro or newer** recommended (iPhone 15 Pro, 16, 16 Pro). Simulator runs but MLX is CPU-only there.
+- Physical device with **A17 Pro or newer** strongly recommended (MLX is CPU-only on simulator)
+- Apple Developer account if you want CloudKit sync
 
 ## First-time build
 
@@ -30,77 +32,137 @@ from Hugging Face into the app sandbox. Subsequent launches are instant.
 
 ## Architecture
 
-Mirrors the blueprint from product spec §7:
+Layered per the BA6 spec:
 
 ```
 ios/Sources/
-├── App/                   @main entry + AppModel bootstrap
-├── Core/
-│   ├── LLMEngine/         MLX wrapper + streaming, ModelCatalog
-│   ├── VideoEngine/       VLM understanding + Metal/AVFoundation gen
-│   ├── Memory/            GRDB store + vector index
-│   ├── Identity/          Secure Enclave + software fallback
-│   └── Crypto/            Request signing for Cloud Boost
-├── Features/
-│   ├── Chat/              Liquid Glass chat surface
-│   ├── Video/             Understand + Generate pane
-│   ├── Settings/          Identity + memory controls
-│   ├── Camera/            Vision OCR ingest (Phase 4)
-│   ├── ShareExtension/    Share-sheet target (Phase 4, stub)
-│   └── Files/             PDF + text ingest (Phase 4, stub)
-└── Services/
-    ├── CloudBoost/        Optional signed cloud offload
-    └── Sync/              CloudKit mirror (Phase 5, stub)
+├── App/                @main entry + AppModel bootstrap + RootView
+├── AI/                 inference, prompts, memory context
+│   ├── InferenceEngine.swift     router that picks the right provider
+│   ├── InferenceTypes.swift      Sendable request / chat-turn types
+│   ├── PromptEngine.swift        persona + memory-injection format
+│   ├── MemoryContext.swift       embedding + retrieval bridge
+│   ├── ModelCatalog.swift        on-device LLMs we ship
+│   ├── Providers/
+│   │   ├── MLXProvider.swift     on-device LLM/VLM (primary)
+│   │   ├── CoreMLProvider.swift  Neural Engine path (embeddings now,
+│   │   │                          tiny distilled LLM hook ready)
+│   │   └── RemoteProvider.swift  signed SSE cloud fallback
+│   └── Video/
+│       ├── VideoEngine.swift     VLM understanding via MLXVLM
+│       ├── VideoFrameSampler.swift
+│       ├── VideoGenerator.swift  Metal frame loop + AVAssetWriter
+│       ├── VideoModelCatalog.swift
+│       ├── VideoWriter.swift
+│       ├── MetalRenderer.swift
+│       └── Shaders.metal
+├── Data/               persistence + identity
+│   ├── Persistence.swift                 NSPersistentCloudKitContainer
+│   ├── Memory/MemoryStore.swift          @MainActor Core Data store
+│   ├── Memory/Models.swift               value types + NSManagedObject
+│   ├── Memory/VectorIndex.swift          in-memory cosine similarity
+│   └── Identity/
+│       ├── DeviceIdentity.swift          Secure Enclave P256
+│       └── RequestSigner.swift           signed cloud requests
+├── UI/                 Liquid Glass component library
+│   ├── Theme.swift           tokens (radius, motion, surface, glow)
+│   ├── GlassPanel.swift      base glass surface w/ depth + glow
+│   ├── GlassCard.swift       interactive expandable card
+│   ├── GlassButton.swift     wraps .glass / .glassProminent
+│   ├── GlassChip.swift       status pill (live pulse glow)
+│   ├── GlassTabBar.swift     floating tab bar w/ pill + matched-geo
+│   └── GlowEffect.swift      reusable glow + liquid highlight
+├── Features/           feature surfaces
+│   ├── Chat/                 streaming bubbles, glass composer
+│   ├── Memory/               expandable memory cards
+│   ├── Video/                Understand + Generate panes
+│   ├── Settings/             identity, models, memory, privacy
+│   └── Camera/               Vision OCR helper (Phase 4 ingest)
+├── Integrations/       system surfaces
+│   ├── AppIntents/
+│   │   ├── AskBA6Intent.swift        "Hey Siri, ask BA6 …"
+│   │   └── BA6IntentRouter.swift     router shared by intents
+│   └── Notifications/
+│       └── NotificationService.swift
+└── Resources/
+    ├── Info.plist
+    ├── Ba6Ai.entitlements
+    └── BA6AI.xcdatamodeld/           Core Data + CloudKit schema
 ```
 
-### Video pipeline
+### Hybrid inference routing
 
-`Core/VideoEngine` hosts two independent paths:
+`InferenceEngine` picks between providers per call:
 
-- **Understanding** — `VideoEngine` actor loads a Qwen 2.5-VL VLM via
-  `MLXVLM`. `VideoFrameSampler` pulls 8 evenly-spaced frames from an
-  `AVURLAsset`; those frames + the user's question stream back through
-  the same `TokenIterator` pattern as text chat.
-- **Generation** — `VideoGenerator` + `MetalRenderer` + `VideoWriter`.
-  The full pipeline is live and produces a valid HEVC .mp4: the
-  renderer owns a `MTLDevice`, a `CVMetalTextureCache`, and three
-  compute kernels in `Shaders.metal` (`identity`, `posterize`,
-  `latent_composite`). The diffusion model that fills in each frame
-  is stubbed with a prompt-seeded gradient until an MLX port of
-  LTX Video / Wan 2.1 lands — at that point `produceLatent(...)`
-  swaps in for the gradient and the rest of the path is unchanged.
+| User preference | Routing                                                                  |
+|-----------------|--------------------------------------------------------------------------|
+| `.localOnly`    | Always MLX on-device.                                                    |
+| `.cloudBoost`   | Always Remote.                                                           |
+| `.auto`         | Image / video attachments → MLX. Estimated context > 4k tokens → Remote. Otherwise MLX if ready, else Remote. |
 
-Why raw Metal when MLX already targets Metal? MLX handles inference
-ops; the renderer is the layer *around* MLX — tone mapping, upscaling,
-temporal effects, and zero-copy texture ↔ `CVPixelBuffer` handoff into
-`AVAssetWriter`. That's what `Shaders.metal` is for.
+The user toggles preference from Settings or per-conversation in the
+chat toolbar. The Liquid Glass chip in the chat header reflects which
+provider answered the last turn.
 
-## Phases shipped in this scaffold
+### Memory model
 
-- **Phase 1** — MLX engine + streaming + chat UI ✅
-- **Phase 2** — Memory schema + vector index ✅ (retrieval wired in; embedding pipeline follows)
-- **Phase 3** — Secure Enclave identity + signed requests ✅
-- **Phase 4** — Camera / Share / Files — stubs only
-- **Phase 5** — Cloud Boost client skeleton ✅ (no backend yet)
+* **Core Data + CloudKit** (`NSPersistentCloudKitContainer`).
+* iCloud sync is **off by default**. Toggle from Settings; data stays
+  in the user's private database.
+* `MemoryContext` calls `CoreMLProvider.embed(...)` (NLEmbedding under
+  the hood) on every "remember that …" capture, stores the vector
+  alongside the row, and rebuilds the in-memory cosine-similarity
+  index on launch.
 
-## Design rules (non-negotiable)
+### App Intents (Siri / Shortcuts)
 
-1. **Stream tokens immediately.** Anything else feels slow.
-2. **Ship small models first.** 3B@4-bit before anything larger.
-3. **Every surface is Liquid Glass.** Use `glassEffect` / `GlassEffectContainer`, not custom materials.
-4. **No accounts.** Identity = device key. Fingerprint only.
-5. **Memory is user-controlled.** Every fact is listable, forgettable, wipeable.
+Two intents ship out of the box:
 
-## Swapping in your own models
+* **AskBA6Intent** — `"Hey Siri, ask BA6 about ..."` returns a streamed
+  answer. Capped at 6 KB so Siri readback stays usable.
+* **RememberFactIntent** — `"Hey Siri, BA6 remember that ..."` writes
+  directly to the memory store, no LLM round-trip.
 
-Edit `Sources/Core/LLMEngine/ModelCatalog.swift`. The `id:` string is the
-Hugging Face repo — any MLX-quantized instruct model works, e.g.
-`mlx-community/Mistral-7B-Instruct-v0.3-4bit`. Larger models need an
-iPhone 15 Pro or iPad with 8 GB+ of RAM.
+Both run in-process (no `openAppWhenRun`) so the Lock Screen / standby
+experience feels native.
+
+### Liquid Glass UI
+
+Every surface routes through `UI/`:
+
+* `Theme.Motion.standard` is the only spring you ever reach for —
+  consistency comes from one source of truth.
+* `GlassPanel` and `GlassCard` add the dual-layer depth shadow,
+  `liquidHighlight` top edge, and optional accent glow.
+* `GlassTabBar` uses `matchedGeometryEffect` for the selection pill
+  and a glowing solid pill on the active tab.
+* `GlassChip` pulses softly when status is non-neutral (loading, etc.)
+  so live state feels alive, not blinking.
+
+## Phase status
+
+- **Phase 1** — MLX engine, streaming, chat ✅
+- **Phase 2** — Core Data memory + retrieval ✅
+- **Phase 3** — Secure Enclave identity + signed cloud requests ✅
+- **Phase 4** — Camera + Files + Share Extension — helpers landed, UI
+  surfaces stubbed
+- **Phase 5** — Cloud Boost backend — Swift client live, server is
+  out-of-repo
+- **Phase 6** — App Intents / Siri ✅, UserNotifications scaffolding ✅,
+  CloudKit toggle ✅
+
+## Customising
+
+| To do | Edit |
+|-------|------|
+| Swap models | `Sources/AI/ModelCatalog.swift` |
+| Change persona | `Sources/AI/PromptEngine.swift` |
+| Tune routing | `Sources/AI/InferenceEngine.swift` |
+| Adjust motion | `Sources/UI/Theme.swift` |
+| Add a Siri phrase | `Sources/Integrations/AppIntents/AskBA6Intent.swift` |
+| Wire Core ML LLM | `Sources/AI/Providers/CoreMLProvider.swift` |
 
 ## Legacy web app
 
-The original React/Netlify web app still lives in the repo root
-(`src/`, `netlify/`, `index.html`, `migrations.sql`). It's no longer
-the primary product; keeping it around for reference while the native
-port lands. Delete when you're ready.
+Original React/Netlify app is preserved under `archive/web-v1/` at
+the repo root. The web at `/` is now a marketing-only landing page.
