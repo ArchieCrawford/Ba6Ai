@@ -3,7 +3,8 @@ set -euo pipefail
 
 echo "[CI] post-clone started"
 
-REPO_ROOT="${CI_WORKSPACE:-$(pwd)}"
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+REPO_ROOT="${CI_WORKSPACE:-$(dirname -- "$SCRIPT_DIR")}"
 
 if ! command -v xcodegen >/dev/null 2>&1; then
   echo "[CI] Installing XcodeGen via Homebrew"
