@@ -1,0 +1,773 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1146A009DF8586714B4C1F6D /* Ba6ai.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 2C973BD1AA95797A3B278DE0 /* Ba6ai.xcodeproj */; };
+		213C83474B14B3C1F79F337C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812DF0158AC894B3D3B3C154 /* ContentView.swift */; };
+		4FBC6B437D134907BC6E3116 /* README.sample in Resources */ = {isa = PBXBuildFile; fileRef = 3ED7DE85DAA1A452CACEB045 /* README.sample */; };
+		71A63EEAA093910F5432D051 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59F69FCCE2DC50689C2123A7 /* Assets.xcassets */; };
+		749C41D67F17143FBF983FE7 /* Ba6aiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C617FD39C7DE4C8D89C5B9 /* Ba6aiApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		09AC3049BCD7F8856A08E863 /* Ba6Ai.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Ba6Ai.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		09C617FD39C7DE4C8D89C5B9 /* Ba6aiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ba6aiApp.swift; sourceTree = "<group>"; };
+		0C81FD024F74BDC32D23F1A0 /* a926a6fad22cded4547278859bce1cca11bdd0 */ = {isa = PBXFileReference; path = a926a6fad22cded4547278859bce1cca11bdd0; sourceTree = "<group>"; };
+		0F64FD6BCF17ADC9B88A3600 /* ORIG_HEAD */ = {isa = PBXFileReference; path = ORIG_HEAD; sourceTree = "<group>"; };
+		10CA601901770B82EBAA76B2 /* stash */ = {isa = PBXFileReference; path = stash; sourceTree = "<group>"; };
+		12508C1C6A63986C7E0761D4 /* description */ = {isa = PBXFileReference; path = description; sourceTree = "<group>"; };
+		15D6A5A6A4B65E34FD3CDEEF /* index */ = {isa = PBXFileReference; path = index; sourceTree = "<group>"; };
+		1A209E1FA44318F2698F1FCF /* e212834574ef7836c163ec2cceeacfa61207e2 */ = {isa = PBXFileReference; path = e212834574ef7836c163ec2cceeacfa61207e2; sourceTree = "<group>"; };
+		23471BE0AA57F360A260CE68 /* config */ = {isa = PBXFileReference; path = config; sourceTree = "<group>"; };
+		259C953FE2090D8171C80EDB /* 06b32cf22039b69b396156ab47c0a97c8721e7 */ = {isa = PBXFileReference; path = 06b32cf22039b69b396156ab47c0a97c8721e7; sourceTree = "<group>"; };
+		2C973BD1AA95797A3B278DE0 /* Ba6ai.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Ba6ai.xcodeproj; sourceTree = "<group>"; };
+		348E6F01DB07D610E8ADD542 /* HEAD */ = {isa = PBXFileReference; path = HEAD; sourceTree = "<group>"; };
+		35C7DB1CF39E44261C1A363B /* e7327f183b4c4db5340edd2bfc895c9edfd892 */ = {isa = PBXFileReference; path = e7327f183b4c4db5340edd2bfc895c9edfd892; sourceTree = "<group>"; };
+		35EDAE943590F239B0574704 /* 18ec7db552455e07107f5a3c601fd45fb07b9b */ = {isa = PBXFileReference; path = 18ec7db552455e07107f5a3c601fd45fb07b9b; sourceTree = "<group>"; };
+		3DC5759531AF1F4DC8B01C76 /* aee8799771b57b5f831d4f1a0056f676591b4a */ = {isa = PBXFileReference; path = aee8799771b57b5f831d4f1a0056f676591b4a; sourceTree = "<group>"; };
+		3ED7DE85DAA1A452CACEB045 /* README.sample */ = {isa = PBXFileReference; path = README.sample; sourceTree = "<group>"; };
+		462A816F56BB3795A113ABBE /* 74f7f75ded8266afbabba772af85bdcd634488 */ = {isa = PBXFileReference; path = 74f7f75ded8266afbabba772af85bdcd634488; sourceTree = "<group>"; };
+		4ABA1DEAAE7CE20EB21DCF0A /* ccf713ff10dd3a6907fd5bb4ddfaca013cce86 */ = {isa = PBXFileReference; path = ccf713ff10dd3a6907fd5bb4ddfaca013cce86; sourceTree = "<group>"; };
+		5452E524D345C158D4349F79 /* 9434a6254f0e9651f402737811be6634a03e9c */ = {isa = PBXFileReference; path = 9434a6254f0e9651f402737811be6634a03e9c; sourceTree = "<group>"; };
+		551A0E6DADBD6776A04B4754 /* 9a16f5b51cee1b83f81c6e7bd042a26fbc17fd */ = {isa = PBXFileReference; path = 9a16f5b51cee1b83f81c6e7bd042a26fbc17fd; sourceTree = "<group>"; };
+		59E11E4BBF7E34CFC9C751D0 /* 300d983eb31eca137227cb29b5641a6d088609 */ = {isa = PBXFileReference; path = 300d983eb31eca137227cb29b5641a6d088609; sourceTree = "<group>"; };
+		59F69FCCE2DC50689C2123A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6A5337ED03693265A8234A2A /* 33721dda7cf69b67b5012b17e7764a87d8a342 */ = {isa = PBXFileReference; path = 33721dda7cf69b67b5012b17e7764a87d8a342; sourceTree = "<group>"; };
+		703DC6DDF9F1201DAFEC4F06 /* 8e6aa350ae18fd74b8d504cd673d14c9e74c9f */ = {isa = PBXFileReference; path = 8e6aa350ae18fd74b8d504cd673d14c9e74c9f; sourceTree = "<group>"; };
+		70463F2E7A7C166BB96CB3F8 /* 889ff98e8c23b4a564a8cc6e4f4d3943f40003 */ = {isa = PBXFileReference; path = 889ff98e8c23b4a564a8cc6e4f4d3943f40003; sourceTree = "<group>"; };
+		7AE986DC322DA35067CA00E0 /* 835f17e41e858d81b328641c3a1fca86627aa4 */ = {isa = PBXFileReference; path = 835f17e41e858d81b328641c3a1fca86627aa4; sourceTree = "<group>"; };
+		812DF0158AC894B3D3B3C154 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		819226D38C9825ECCE310A08 /* 28828d0f7ef1be7fa7a136ea8ab8c586638a86 */ = {isa = PBXFileReference; path = 28828d0f7ef1be7fa7a136ea8ab8c586638a86; sourceTree = "<group>"; };
+		893477A5BA83C2C70AA0F91A /* 05880107db52fdcc2a49e2cd1cd14ced699c85 */ = {isa = PBXFileReference; path = 05880107db52fdcc2a49e2cd1cd14ced699c85; sourceTree = "<group>"; };
+		8F575B07D2E5E4A265545284 /* 0c436c7b055bbfa56c2ffef4a47b6a666f521e */ = {isa = PBXFileReference; path = 0c436c7b055bbfa56c2ffef4a47b6a666f521e; sourceTree = "<group>"; };
+		9162E18304FEC2205890C6AD /* 191cacf0cb2c9c94759b7ea3656eea4143e27d */ = {isa = PBXFileReference; path = 191cacf0cb2c9c94759b7ea3656eea4143e27d; sourceTree = "<group>"; };
+		95C7F098A251006BEEC3DDF1 /* 8789700816459c1e1480e0b34781d9fb78a1ca */ = {isa = PBXFileReference; path = 8789700816459c1e1480e0b34781d9fb78a1ca; sourceTree = "<group>"; };
+		9C152EECF108427E03274CD9 /* stash */ = {isa = PBXFileReference; path = stash; sourceTree = "<group>"; };
+		9E73F7C0BE53BC3D1BDE5399 /* bcf55ad2c6d3fda712f3014205e4afcebe2543 */ = {isa = PBXFileReference; path = bcf55ad2c6d3fda712f3014205e4afcebe2543; sourceTree = "<group>"; };
+		A4782F55BBF4D7C61CD8518E /* c00596a7fca3f3d4bdd64053b69d86745f9e10 */ = {isa = PBXFileReference; path = c00596a7fca3f3d4bdd64053b69d86745f9e10; sourceTree = "<group>"; };
+		AD38E92A4F9FB2DD7AA73B71 /* main */ = {isa = PBXFileReference; path = main; sourceTree = "<group>"; };
+		ADDA90123ECEC3332AE1B552 /* HEAD */ = {isa = PBXFileReference; path = HEAD; sourceTree = "<group>"; };
+		AE96F86A1A885A4549CB9E04 /* d71849e35a3140d218240f437eb07f0dae4834 */ = {isa = PBXFileReference; path = d71849e35a3140d218240f437eb07f0dae4834; sourceTree = "<group>"; };
+		B4B03528C884452FA903C965 /* c29ceb625fe07dd60afa909e70c4696d794d5d */ = {isa = PBXFileReference; path = c29ceb625fe07dd60afa909e70c4696d794d5d; sourceTree = "<group>"; };
+		B6F7F7450496FF34AB69C3E0 /* c19cc17a1d6452956495c8f392c3673f08a9eb */ = {isa = PBXFileReference; path = c19cc17a1d6452956495c8f392c3673f08a9eb; sourceTree = "<group>"; };
+		C4838BF5748FF04BC2E20BF9 /* 72f4aa249f413995fcd0bd0ee7ac5b471a0126 */ = {isa = PBXFileReference; path = 72f4aa249f413995fcd0bd0ee7ac5b471a0126; sourceTree = "<group>"; };
+		D2CB5B784685BC2AC2AFA83A /* afa32cf9997d159f3e122dd47ba42be4e861c5 */ = {isa = PBXFileReference; path = afa32cf9997d159f3e122dd47ba42be4e861c5; sourceTree = "<group>"; };
+		DF10B691CB0A5BFF2A4306AB /* 5eb394e2f34f00b2693150cf93967f8c09887b */ = {isa = PBXFileReference; path = 5eb394e2f34f00b2693150cf93967f8c09887b; sourceTree = "<group>"; };
+		E5A05546F640F13AF6F9521D /* main */ = {isa = PBXFileReference; path = main; sourceTree = "<group>"; };
+		E7538D87C1D955B79FB1FCBB /* 6bd324c26d854187559f27f8194c8afd1795ac */ = {isa = PBXFileReference; path = 6bd324c26d854187559f27f8194c8afd1795ac; sourceTree = "<group>"; };
+		F08954EB8D498247B8EF4E25 /* 35b478c185dd37633f6b5845624151a5413110 */ = {isa = PBXFileReference; path = 35b478c185dd37633f6b5845624151a5413110; sourceTree = "<group>"; };
+		F52EC6F849991D5C0305A1C7 /* exclude */ = {isa = PBXFileReference; path = exclude; sourceTree = "<group>"; };
+		FB71741C460D98A7B752BA9D /* COMMIT_EDITMSG */ = {isa = PBXFileReference; path = COMMIT_EDITMSG; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0151BA4EDE21489FB359BFE0 /* refs */ = {
+			isa = PBXGroup;
+			children = (
+				36E66FE1AE007C6224046E2A /* heads */,
+				10CA601901770B82EBAA76B2 /* stash */,
+			);
+			path = refs;
+			sourceTree = "<group>";
+		};
+		0277737D28B9E028A9A820F9 /* hooks */ = {
+			isa = PBXGroup;
+			children = (
+				3ED7DE85DAA1A452CACEB045 /* README.sample */,
+			);
+			path = hooks;
+			sourceTree = "<group>";
+		};
+		050C7CE8A30C93E4D444C9ED /* refs */ = {
+			isa = PBXGroup;
+			children = (
+				773040F5E3E9994D277C8EFD /* heads */,
+				9C152EECF108427E03274CD9 /* stash */,
+			);
+			path = refs;
+			sourceTree = "<group>";
+		};
+		067234FC2837C91E46ACCF2C /* Ba6ai */ = {
+			isa = PBXGroup;
+			children = (
+				0F7AB30901C98459C0F8EC71 /* .git */,
+				78AAB57A2881E254A44B4D30 /* Ba6ai */,
+				2C973BD1AA95797A3B278DE0 /* Ba6ai.xcodeproj */,
+			);
+			path = Ba6ai;
+			sourceTree = "<group>";
+		};
+		0F7AB30901C98459C0F8EC71 /* .git */ = {
+			isa = PBXGroup;
+			children = (
+				0277737D28B9E028A9A820F9 /* hooks */,
+				3574C2EE8C934407470D7F8A /* info */,
+				E1C84D929A4758E5BA8A116D /* logs */,
+				E08A74FB848E733DABCD6857 /* objects */,
+				050C7CE8A30C93E4D444C9ED /* refs */,
+				FB71741C460D98A7B752BA9D /* COMMIT_EDITMSG */,
+				23471BE0AA57F360A260CE68 /* config */,
+				12508C1C6A63986C7E0761D4 /* description */,
+				348E6F01DB07D610E8ADD542 /* HEAD */,
+				15D6A5A6A4B65E34FD3CDEEF /* index */,
+				0F64FD6BCF17ADC9B88A3600 /* ORIG_HEAD */,
+			);
+			path = .git;
+			sourceTree = "<group>";
+		};
+		0FB5490A9C2A02558F685CFC /* 91 */ = {
+			isa = PBXGroup;
+			children = (
+				5452E524D345C158D4349F79 /* 9434a6254f0e9651f402737811be6634a03e9c */,
+			);
+			path = 91;
+			sourceTree = "<group>";
+		};
+		209B00533C4154138EF9CB79 /* 3a */ = {
+			isa = PBXGroup;
+			children = (
+				6A5337ED03693265A8234A2A /* 33721dda7cf69b67b5012b17e7764a87d8a342 */,
+			);
+			path = 3a;
+			sourceTree = "<group>";
+		};
+		2ED480E9CF326322F73A7436 /* 73 */ = {
+			isa = PBXGroup;
+			children = (
+				A4782F55BBF4D7C61CD8518E /* c00596a7fca3f3d4bdd64053b69d86745f9e10 */,
+			);
+			path = 73;
+			sourceTree = "<group>";
+		};
+		3574C2EE8C934407470D7F8A /* info */ = {
+			isa = PBXGroup;
+			children = (
+				F52EC6F849991D5C0305A1C7 /* exclude */,
+			);
+			path = info;
+			sourceTree = "<group>";
+		};
+		36E66FE1AE007C6224046E2A /* heads */ = {
+			isa = PBXGroup;
+			children = (
+				AD38E92A4F9FB2DD7AA73B71 /* main */,
+			);
+			path = heads;
+			sourceTree = "<group>";
+		};
+		37C43DE6A191A1ACE5D579D6 /* d9 */ = {
+			isa = PBXGroup;
+			children = (
+				B6F7F7450496FF34AB69C3E0 /* c19cc17a1d6452956495c8f392c3673f08a9eb */,
+			);
+			path = d9;
+			sourceTree = "<group>";
+		};
+		38FA7B636AB5EDAC7A50AA35 /* 20 */ = {
+			isa = PBXGroup;
+			children = (
+				DF10B691CB0A5BFF2A4306AB /* 5eb394e2f34f00b2693150cf93967f8c09887b */,
+			);
+			path = 20;
+			sourceTree = "<group>";
+		};
+		3CFAD348C5D01BB5BEA0796E /* 47 */ = {
+			isa = PBXGroup;
+			children = (
+				B4B03528C884452FA903C965 /* c29ceb625fe07dd60afa909e70c4696d794d5d */,
+			);
+			path = 47;
+			sourceTree = "<group>";
+		};
+		44287195904F07DA4DFB921E /* 5d */ = {
+			isa = PBXGroup;
+			children = (
+				4ABA1DEAAE7CE20EB21DCF0A /* ccf713ff10dd3a6907fd5bb4ddfaca013cce86 */,
+			);
+			path = 5d;
+			sourceTree = "<group>";
+		};
+		4A50EF2E4F57113C89299E93 /* af */ = {
+			isa = PBXGroup;
+			children = (
+				1A209E1FA44318F2698F1FCF /* e212834574ef7836c163ec2cceeacfa61207e2 */,
+			);
+			path = af;
+			sourceTree = "<group>";
+		};
+		5EC21F1C8662A43E3B655C11 /* b3 */ = {
+			isa = PBXGroup;
+			children = (
+				9162E18304FEC2205890C6AD /* 191cacf0cb2c9c94759b7ea3656eea4143e27d */,
+			);
+			path = b3;
+			sourceTree = "<group>";
+		};
+		646C0D04902286493B302A43 /* eb */ = {
+			isa = PBXGroup;
+			children = (
+				95C7F098A251006BEEC3DDF1 /* 8789700816459c1e1480e0b34781d9fb78a1ca */,
+			);
+			path = eb;
+			sourceTree = "<group>";
+		};
+		6653188399C77A683B3A5192 /* f1 */ = {
+			isa = PBXGroup;
+			children = (
+				35EDAE943590F239B0574704 /* 18ec7db552455e07107f5a3c601fd45fb07b9b */,
+			);
+			path = f1;
+			sourceTree = "<group>";
+		};
+		678325359A05668C9C1A3E8C /* 98 */ = {
+			isa = PBXGroup;
+			children = (
+				E7538D87C1D955B79FB1FCBB /* 6bd324c26d854187559f27f8194c8afd1795ac */,
+			);
+			path = 98;
+			sourceTree = "<group>";
+		};
+		72192876C8F351665AC24025 /* e3 */ = {
+			isa = PBXGroup;
+			children = (
+				259C953FE2090D8171C80EDB /* 06b32cf22039b69b396156ab47c0a97c8721e7 */,
+			);
+			path = e3;
+			sourceTree = "<group>";
+		};
+		773040F5E3E9994D277C8EFD /* heads */ = {
+			isa = PBXGroup;
+			children = (
+				E5A05546F640F13AF6F9521D /* main */,
+			);
+			path = heads;
+			sourceTree = "<group>";
+		};
+		7757998F111E0718BAE440FE /* 23 */ = {
+			isa = PBXGroup;
+			children = (
+				893477A5BA83C2C70AA0F91A /* 05880107db52fdcc2a49e2cd1cd14ced699c85 */,
+			);
+			path = 23;
+			sourceTree = "<group>";
+		};
+		78AAB57A2881E254A44B4D30 /* Ba6ai */ = {
+			isa = PBXGroup;
+			children = (
+				59F69FCCE2DC50689C2123A7 /* Assets.xcassets */,
+				09C617FD39C7DE4C8D89C5B9 /* Ba6aiApp.swift */,
+				812DF0158AC894B3D3B3C154 /* ContentView.swift */,
+			);
+			path = Ba6ai;
+			sourceTree = "<group>";
+		};
+		7DA9057D49B9180DC0D28769 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				09AC3049BCD7F8856A08E863 /* Ba6Ai.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7EF21F9195FCCF15F48E66F0 = {
+			isa = PBXGroup;
+			children = (
+				067234FC2837C91E46ACCF2C /* Ba6ai */,
+				7DA9057D49B9180DC0D28769 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		80D1D5651409D29A782EA634 /* e6 */ = {
+			isa = PBXGroup;
+			children = (
+				9E73F7C0BE53BC3D1BDE5399 /* bcf55ad2c6d3fda712f3014205e4afcebe2543 */,
+			);
+			path = e6;
+			sourceTree = "<group>";
+		};
+		953074CB4C4A95CDCE953513 /* 79 */ = {
+			isa = PBXGroup;
+			children = (
+				F08954EB8D498247B8EF4E25 /* 35b478c185dd37633f6b5845624151a5413110 */,
+			);
+			path = 79;
+			sourceTree = "<group>";
+		};
+		96B4989F00A8B5E9D53F00BB /* f8 */ = {
+			isa = PBXGroup;
+			children = (
+				3DC5759531AF1F4DC8B01C76 /* aee8799771b57b5f831d4f1a0056f676591b4a */,
+			);
+			path = f8;
+			sourceTree = "<group>";
+		};
+		97E365C60344D69E62E0A94E /* a8 */ = {
+			isa = PBXGroup;
+			children = (
+				AE96F86A1A885A4549CB9E04 /* d71849e35a3140d218240f437eb07f0dae4834 */,
+			);
+			path = a8;
+			sourceTree = "<group>";
+		};
+		9A5B24B3E0B0C1283FB4BE38 /* b9 */ = {
+			isa = PBXGroup;
+			children = (
+				703DC6DDF9F1201DAFEC4F06 /* 8e6aa350ae18fd74b8d504cd673d14c9e74c9f */,
+			);
+			path = b9;
+			sourceTree = "<group>";
+		};
+		9B4854BEF1231D48C4459B41 /* 7f */ = {
+			isa = PBXGroup;
+			children = (
+				462A816F56BB3795A113ABBE /* 74f7f75ded8266afbabba772af85bdcd634488 */,
+			);
+			path = 7f;
+			sourceTree = "<group>";
+		};
+		CB94E45A3AF64DF779A30CCD /* 16 */ = {
+			isa = PBXGroup;
+			children = (
+				35C7DB1CF39E44261C1A363B /* e7327f183b4c4db5340edd2bfc895c9edfd892 */,
+			);
+			path = 16;
+			sourceTree = "<group>";
+		};
+		DE1655B0EB75704D3A39FD70 /* e2 */ = {
+			isa = PBXGroup;
+			children = (
+				0C81FD024F74BDC32D23F1A0 /* a926a6fad22cded4547278859bce1cca11bdd0 */,
+			);
+			path = e2;
+			sourceTree = "<group>";
+		};
+		E08A74FB848E733DABCD6857 /* objects */ = {
+			isa = PBXGroup;
+			children = (
+				EFC3E61BD45C2A448BB7FD70 /* 0b */,
+				209B00533C4154138EF9CB79 /* 3a */,
+				E4DD29AF7C3B07924DD87E31 /* 4f */,
+				44287195904F07DA4DFB921E /* 5d */,
+				FBC3FA2296F40B0464979D1C /* 7c */,
+				9B4854BEF1231D48C4459B41 /* 7f */,
+				CB94E45A3AF64DF779A30CCD /* 16 */,
+				38FA7B636AB5EDAC7A50AA35 /* 20 */,
+				7757998F111E0718BAE440FE /* 23 */,
+				3CFAD348C5D01BB5BEA0796E /* 47 */,
+				2ED480E9CF326322F73A7436 /* 73 */,
+				953074CB4C4A95CDCE953513 /* 79 */,
+				0FB5490A9C2A02558F685CFC /* 91 */,
+				678325359A05668C9C1A3E8C /* 98 */,
+				97E365C60344D69E62E0A94E /* a8 */,
+				4A50EF2E4F57113C89299E93 /* af */,
+				5EC21F1C8662A43E3B655C11 /* b3 */,
+				9A5B24B3E0B0C1283FB4BE38 /* b9 */,
+				F916EFC0349CCD539D3AC4DA /* ca */,
+				37C43DE6A191A1ACE5D579D6 /* d9 */,
+				FCEFCCF37CA1A59AC80763D0 /* dc */,
+				DE1655B0EB75704D3A39FD70 /* e2 */,
+				72192876C8F351665AC24025 /* e3 */,
+				80D1D5651409D29A782EA634 /* e6 */,
+				F2CEB6F610FB9B95477ACBED /* e7 */,
+				646C0D04902286493B302A43 /* eb */,
+				FD633AE402FD7006BCEB9044 /* f0 */,
+				6653188399C77A683B3A5192 /* f1 */,
+				96B4989F00A8B5E9D53F00BB /* f8 */,
+			);
+			path = objects;
+			sourceTree = "<group>";
+		};
+		E1C84D929A4758E5BA8A116D /* logs */ = {
+			isa = PBXGroup;
+			children = (
+				0151BA4EDE21489FB359BFE0 /* refs */,
+				ADDA90123ECEC3332AE1B552 /* HEAD */,
+			);
+			path = logs;
+			sourceTree = "<group>";
+		};
+		E4DD29AF7C3B07924DD87E31 /* 4f */ = {
+			isa = PBXGroup;
+			children = (
+				551A0E6DADBD6776A04B4754 /* 9a16f5b51cee1b83f81c6e7bd042a26fbc17fd */,
+			);
+			path = 4f;
+			sourceTree = "<group>";
+		};
+		EFC3E61BD45C2A448BB7FD70 /* 0b */ = {
+			isa = PBXGroup;
+			children = (
+				D2CB5B784685BC2AC2AFA83A /* afa32cf9997d159f3e122dd47ba42be4e861c5 */,
+			);
+			path = 0b;
+			sourceTree = "<group>";
+		};
+		F2CEB6F610FB9B95477ACBED /* e7 */ = {
+			isa = PBXGroup;
+			children = (
+				7AE986DC322DA35067CA00E0 /* 835f17e41e858d81b328641c3a1fca86627aa4 */,
+			);
+			path = e7;
+			sourceTree = "<group>";
+		};
+		F916EFC0349CCD539D3AC4DA /* ca */ = {
+			isa = PBXGroup;
+			children = (
+				59E11E4BBF7E34CFC9C751D0 /* 300d983eb31eca137227cb29b5641a6d088609 */,
+				819226D38C9825ECCE310A08 /* 28828d0f7ef1be7fa7a136ea8ab8c586638a86 */,
+			);
+			path = ca;
+			sourceTree = "<group>";
+		};
+		FBC3FA2296F40B0464979D1C /* 7c */ = {
+			isa = PBXGroup;
+			children = (
+				70463F2E7A7C166BB96CB3F8 /* 889ff98e8c23b4a564a8cc6e4f4d3943f40003 */,
+			);
+			path = 7c;
+			sourceTree = "<group>";
+		};
+		FCEFCCF37CA1A59AC80763D0 /* dc */ = {
+			isa = PBXGroup;
+			children = (
+				C4838BF5748FF04BC2E20BF9 /* 72f4aa249f413995fcd0bd0ee7ac5b471a0126 */,
+			);
+			path = dc;
+			sourceTree = "<group>";
+		};
+		FD633AE402FD7006BCEB9044 /* f0 */ = {
+			isa = PBXGroup;
+			children = (
+				8F575B07D2E5E4A265545284 /* 0c436c7b055bbfa56c2ffef4a47b6a666f521e */,
+			);
+			path = f0;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		81691D5CA8B5B6584959EFE8 /* Ba6Ai */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB620E7C18CFDAD2ED9F7CB1 /* Build configuration list for PBXNativeTarget "Ba6Ai" */;
+			buildPhases = (
+				40EDD04E805851A6B369D4C3 /* Sources */,
+				128CFD85C5F4F4FF7AAA7C14 /* Xcode Cloud: Cache Pods/Derived Data placeholder */,
+				F2675DF438D617FD20DC9F08 /* Resources */,
+				2217F6CB10D74F62C28AB630 /* Xcode Cloud: Build Summary */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Ba6Ai;
+			packageProductDependencies = (
+			);
+			productName = Ba6Ai;
+			productReference = 09AC3049BCD7F8856A08E863 /* Ba6Ai.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		71D5027653BC478774E3EAE0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				ORGANIZATIONNAME = Ba6Ai;
+				TargetAttributes = {
+					81691D5CA8B5B6584959EFE8 = {
+						DevelopmentTeam = "Archie Crawford";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C876CEF06D589706314CFE9A /* Build configuration list for PBXProject "Ba6Ai" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 7EF21F9195FCCF15F48E66F0;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 7DA9057D49B9180DC0D28769 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				81691D5CA8B5B6584959EFE8 /* Ba6Ai */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F2675DF438D617FD20DC9F08 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				71A63EEAA093910F5432D051 /* Assets.xcassets in Resources */,
+				1146A009DF8586714B4C1F6D /* Ba6ai.xcodeproj in Resources */,
+				4FBC6B437D134907BC6E3116 /* README.sample in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		128CFD85C5F4F4FF7AAA7C14 /* Xcode Cloud: Cache Pods/Derived Data placeholder */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Xcode Cloud: Cache Pods/Derived Data placeholder";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Post-compile hook\"\n";
+		};
+		2217F6CB10D74F62C28AB630 /* Xcode Cloud: Build Summary */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Xcode Cloud: Build Summary";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Build completed at $(date)\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		40EDD04E805851A6B369D4C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				749C41D67F17143FBF983FE7 /* Ba6aiApp.swift in Sources */,
+				213C83474B14B3C1F79F337C /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		270E37807A8FDE3BC3FABF57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "Archie Crawford";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ac.ba6.Ba6Ai;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.1;
+			};
+			name = Debug;
+		};
+		C516DB3EB756A24E96FDEB54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ac.ba6.Ba6Ai;
+				PRODUCT_NAME = Ba6Ai;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F411B16CDE6FBF78971C2414 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ac.ba6.Ba6Ai;
+				PRODUCT_NAME = Ba6Ai;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F454BBEE295E61BEDB333699 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "Archie Crawford";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ac.ba6.Ba6Ai;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AB620E7C18CFDAD2ED9F7CB1 /* Build configuration list for PBXNativeTarget "Ba6Ai" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F411B16CDE6FBF78971C2414 /* Debug */,
+				C516DB3EB756A24E96FDEB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C876CEF06D589706314CFE9A /* Build configuration list for PBXProject "Ba6Ai" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				270E37807A8FDE3BC3FABF57 /* Debug */,
+				F454BBEE295E61BEDB333699 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 71D5027653BC478774E3EAE0 /* Project object */;
+}
