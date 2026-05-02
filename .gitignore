@@ -16,3 +16,7 @@ xcuserdata/
 *.xcuserstate
 Ba6Ai.xcodeproj
 Ba6ai.xcodeproj
+# XcodeGen-generated project
+*.xcodeproj
+*.xcworkspace
+DerivedData/
