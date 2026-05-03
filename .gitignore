@@ -11,12 +11,20 @@ ios/DerivedData/
 ios/.build/
 ios/Pods/
 ios/*.xcworkspace
+
 .DS_Store
 xcuserdata/
 *.xcuserstate
-Ba6Ai.xcodeproj
-Ba6ai.xcodeproj
-# XcodeGen-generated project
-*.xcodeproj
-*.xcworkspace
+
+# Track only shared schemes from the project (ignore everything else inside)
+Ba6Ai.xcodeproj/*
+!Ba6Ai.xcodeproj/xcshareddata/
+!Ba6Ai.xcodeproj/xcshareddata/xcschemes/
+!Ba6Ai.xcodeproj/xcshareddata/xcschemes/*.xcscheme
+
+# If you need to ignore all other projects/workspaces, keep these commented:
+# *.xcodeproj
+# *.xcworkspace
+
+# General DerivedData ignore
 DerivedData/
