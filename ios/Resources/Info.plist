@@ -19,6 +19,16 @@
     <array>
         <string>UIInterfaceOrientationPortrait</string>
     </array>
+    <key>UIApplicationSceneManifest</key>
+    <dict>
+        <key>UIApplicationSupportsMultipleScenes</key>
+        <false/>
+    </dict>
+    <key>NSUserActivityTypes</key>
+    <array>
+        <string>AskBA6Intent</string>
+        <string>RememberFactIntent</string>
+    </array>
     <key>NSCameraUsageDescription</key>
     <string>BA6 AI uses the camera to understand images you share with it, on-device.</string>
     <key>NSPhotoLibraryUsageDescription</key>
