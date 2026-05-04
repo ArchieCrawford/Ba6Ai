@@ -1,6 +1,0 @@
-// This is the entire .gitignore file content with the appended lines if not present
-
-# Ignore generated Xcode project from XcodeGen
-Ba6Ai.xcodeproj
-*.xcodeproj/xcuserdata/
-*.xcodeproj/project.xcworkspace/
