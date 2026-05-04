@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Minimal entitlements file. Add capabilities here as needed (e.g., com.apple.security.application-groups, keychain-access-groups). -->
+    <!-- The application-identifier will be populated by signing; no need to hardcode. -->
+</dict>
+</plist>
