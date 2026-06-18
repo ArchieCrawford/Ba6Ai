@@ -27,13 +27,13 @@ struct Ba6AiApp: App {
 @Observable
 @MainActor
 public final class AppModel {
-    public var identity: DeviceIdentity?
-    public var memory: MemoryStore?
-    public var engine: InferenceEngine?
-    public var videoEngine: VideoEngine?
-    public var memoryContext: MemoryContext?
-    public var bootError: String?
-    public var isReady = false
+    var identity: DeviceIdentity?
+    var memory: MemoryStore?
+    var engine: InferenceEngine?
+    var videoEngine: VideoEngine?
+    var memoryContext: MemoryContext?
+    var bootError: String?
+    var isReady = false
 
     public init() {}
 

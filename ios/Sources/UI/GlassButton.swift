@@ -39,7 +39,6 @@ struct GlassButton<Label: View>: View {
         }
     }
 
-    @ViewBuilder
     private var stylized: some PrimitiveButtonStyle {
         switch kind {
         case .regular:     GlassButtonStyleAdapter(prominent: false)

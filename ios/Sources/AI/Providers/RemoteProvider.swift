@@ -27,7 +27,7 @@ public actor RemoteProvider: InferenceProvider {
     private let config: Config
     private let signer: RequestSigner
 
-    public init(config: Config, signer: RequestSigner) {
+    init(config: Config, signer: RequestSigner) {
         self.config = config
         self.signer = signer
     }

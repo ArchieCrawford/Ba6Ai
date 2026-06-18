@@ -148,7 +148,7 @@ struct MemoryView: View {
                 .frame(width: 32, height: 32)
             Image(systemName: mem.pinned ? "pin.fill" : "lightbulb")
                 .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(mem.pinned ? .accent : .white)
+                .foregroundStyle(mem.pinned ? Color.accentColor : .white)
         }
     }
 

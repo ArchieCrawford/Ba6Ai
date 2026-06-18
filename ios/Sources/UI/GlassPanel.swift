@@ -1,5 +1,10 @@
 import SwiftUI
 
+enum GlassPanelTint {
+    case neutral
+    case glow(Color)
+}
+
 /// Foundational Liquid Glass surface.
 ///
 /// Wraps `glassEffect(.regular, in:)` with consistent corner radii, a
@@ -8,10 +13,7 @@ import SwiftUI
 /// through this view rather than calling `.glassEffect` directly so the
 /// look stays cohesive when we evolve the system.
 struct GlassPanel<Content: View>: View {
-    enum Tint {
-        case neutral
-        case glow(Color)
-    }
+    typealias Tint = GlassPanelTint
 
     var radius: CGFloat = Theme.Radius.panel
     var tint: Tint = .neutral
@@ -20,12 +22,12 @@ struct GlassPanel<Content: View>: View {
 
     var body: some View {
         content()
-            .modifier(_Padding(padding: padding))
+            .modifier(_GlassPanelPadding(padding: padding))
             .glassEffect(.regular, in: .rect(cornerRadius: radius))
             .overlay(highlight)
             .shadow(color: .black.opacity(0.45), radius: 24, x: 0, y: 16)
             .shadow(color: .black.opacity(0.25), radius: 4,  x: 0, y: 2)
-            .modifier(_Glow(tint: tint, radius: radius))
+            .modifier(_GlassPanelGlow(tint: tint, radius: radius))
     }
 
     private var highlight: some View {
@@ -42,17 +44,19 @@ struct GlassPanel<Content: View>: View {
             .allowsHitTesting(false)
     }
 
-    private struct _Padding: ViewModifier {
-        let padding: CGFloat?
-        func body(content: Content) -> some View {
-            if let padding { content.padding(padding) } else { content }
-        }
-    }
+}
 
-    private struct _Glow: ViewModifier {
-        let tint: Tint
-        let radius: CGFloat
-        func body(content: Content) -> some View {
+private struct _GlassPanelPadding: ViewModifier {
+    let padding: CGFloat?
+    @ViewBuilder func body(content: Content) -> some View {
+        if let padding { content.padding(padding) } else { content }
+    }
+}
+
+private struct _GlassPanelGlow: ViewModifier {
+    let tint: GlassPanelTint
+    let radius: CGFloat
+    func body(content: Content) -> some View {
             switch tint {
             case .neutral:
                 content
@@ -68,4 +72,3 @@ struct GlassPanel<Content: View>: View {
             }
         }
     }
-}
