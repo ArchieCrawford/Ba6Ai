@@ -1,5 +1,5 @@
 #!/bin/sh
-set -uo pipefail
+set -euo pipefail
 
 # ─── Xcode Cloud: post-clone script (ios/ project root variant) ─────────────
 # Used when the Xcode Cloud workflow points at ios/Ba6Ai.xcodeproj rather
@@ -9,7 +9,7 @@ set -uo pipefail
 
 echo "[CI] post-clone started (ios/ variant)"
 
-REPO_ROOT="${CI_WORKSPACE:-.}"
+REPO_ROOT="${CI_PRIMARY_REPOSITORY_PATH:-$(cd "$(dirname "$0")/../.." && pwd)}"
 IOS_DIR="$REPO_ROOT/ios"
 
 if ! command -v xcodegen >/dev/null 2>&1; then
