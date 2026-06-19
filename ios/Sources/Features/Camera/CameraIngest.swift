@@ -1,5 +1,5 @@
 import SwiftUI
-import Vision
+@preconcurrency import Vision
 import PhotosUI
 
 /// Phase 4 placeholder for camera + photo library ingestion.
@@ -33,8 +33,10 @@ enum CameraIngest {
             req.recognitionLevel = .accurate
             req.usesLanguageCorrection = true
             let handler = VNImageRequestHandler(cgImage: cg, options: [:])
+            nonisolated(unsafe) let capturedReq = req
+            nonisolated(unsafe) let capturedHandler = handler
             DispatchQueue.global(qos: .userInitiated).async {
-                do { try handler.perform([req]) } catch { cont.resume(throwing: error) }
+                do { try capturedHandler.perform([capturedReq]) } catch { cont.resume(throwing: error) }
             }
         }
     }

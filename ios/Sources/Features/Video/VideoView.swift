@@ -84,7 +84,7 @@ private struct UnderstandPane: View {
             }
             .buttonStyle(.glass)
             .onChange(of: vm.pickerItem) { _, _ in
-                Task { await vm.loadPickedVideo() }
+                Task { @MainActor in await vm.loadPickedVideo() }
             }
 
             if let url = vm.videoURL {

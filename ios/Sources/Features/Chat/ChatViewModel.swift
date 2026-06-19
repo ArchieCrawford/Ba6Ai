@@ -71,7 +71,7 @@ final class ChatViewModel {
             conversationID: conversationID, role: .user, content: prompt
         )
 
-        var assistant = Bubble(id: UUID(), role: .assistant, content: "", isStreaming: true)
+        let assistant = Bubble(id: UUID(), role: .assistant, content: "", isStreaming: true)
         bubbles.append(assistant)
         let assistantID = assistant.id
 
@@ -79,7 +79,6 @@ final class ChatViewModel {
             guard let self else { return }
             await self.runTurn(prompt: prompt, userMessageID: userMessage?.id, assistantID: assistantID)
         }
-        _ = assistant
     }
 
     private func runTurn(prompt: String, userMessageID: UUID?, assistantID: UUID) async {

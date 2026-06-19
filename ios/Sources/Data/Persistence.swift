@@ -44,7 +44,7 @@ public final class PersistenceController: @unchecked Sendable {
             }
         }
         container.viewContext.automaticallyMergesChangesFromParent = true
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy as AnyObject
 
         self.container = container
         self.storeURL = description.url ?? URL(fileURLWithPath: "/dev/null")
@@ -70,7 +70,7 @@ public final class PersistenceController: @unchecked Sendable {
     public func newBackgroundContext() -> NSManagedObjectContext {
         let ctx = container.newBackgroundContext()
         ctx.automaticallyMergesChangesFromParent = true
-        ctx.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        ctx.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy as AnyObject
         return ctx
     }
 }

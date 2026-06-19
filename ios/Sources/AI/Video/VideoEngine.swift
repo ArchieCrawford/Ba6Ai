@@ -106,19 +106,19 @@ actor VideoEngine {
                         images: images
                     )
 
-                    _ = try await container.perform {
-                        let lmInput = try await container.processor.prepare(input: userInput)
+                    _ = try await container.perform { context in
+                        let lmInput = try await context.processor.prepare(input: userInput)
                         let iterator = try TokenIterator(
                             input: lmInput,
-                            model: container.model,
+                            model: context.model,
                             parameters: params
                         )
                         var produced = 0
-                        var detokenizer = NaiveStreamingDetokenizer(tokenizer: container.tokenizer)
+                        var detokenizer = NaiveStreamingDetokenizer(tokenizer: context.tokenizer)
 
                         for token in iterator {
                             if Task.isCancelled { break }
-                            if token == container.tokenizer.eosTokenId { break }
+                            if token == context.tokenizer.eosTokenId { break }
 
                             detokenizer.append(token: token)
                             if let piece = detokenizer.next() {
@@ -130,6 +130,7 @@ actor VideoEngine {
                         if let tail = detokenizer.finalize() {
                             continuation.yield(tail)
                         }
+                        return ()
                     }
                     continuation.finish()
                 } catch {
